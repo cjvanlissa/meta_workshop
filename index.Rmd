@@ -7,6 +7,7 @@ knit: (function(inputFile, encoding) {
 output: 
   ioslides_presentation:
     widescreen: true
+    css: https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css
 ---
 
 ```{r setup, include=FALSE}
@@ -14,6 +15,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 library(dplyr)
 library(metaforest)
+options("kableExtra.html.bsTable" = T)
 ```
 
 <!--
