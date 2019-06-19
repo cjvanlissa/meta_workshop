@@ -4,7 +4,9 @@ author: "Caspar J. van Lissa"
 date: "June 26, 2019"
 knit: (function(inputFile, encoding) {
   rmarkdown::render(inputFile, encoding = encoding, output_dir = "docs") })
-output: ioslides_presentation
+output: 
+  ioslides_presentation:
+    widescreen: true
 ---
 
 ```{r setup, include=FALSE}
@@ -83,7 +85,8 @@ Shift from narrative reviews to systematic reviews:
 
 ## Popularity
 
-```{r out.width = "800px", out.height= "400px"}
+```{r}
+#  out.width = "800px", out.height= "400px"
  knitr::include_graphics("./materials/ioannidis_2016.png")
 ```
 
