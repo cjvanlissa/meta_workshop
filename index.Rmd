@@ -1149,14 +1149,20 @@ knitr::include_graphics('materials/zotero.png')
 
 ## Systematic reviews: Deduplication
 
-<iframe src="https://sr-accelerator.com/#/help/dedupe"></iframe>
+<!--iframe src="https://sr-accelerator.com/#/help/dedupe"></iframe-->
 
+[![](materials/dedup.png)](http://sr-accelerator.com/#/help/dedupe)
 
 ## Systematic reviews: Screening abstracts
+
+[RAYYAN](https://rayyan.qcri.org/welcome)
 
 ```{r, echo = FALSE}
 knitr::include_graphics('materials/rayyan.png')
 ```
+
+
+
 
 ## Systematic reviews: Protocol
 
