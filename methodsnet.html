@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="methodsnet_files/libs/clipboard/clipboard.min.js"></script>
+<script src="methodsnet_files/libs/quarto-html/tabby.min.js"></script>
+<script src="methodsnet_files/libs/quarto-html/popper.min.js"></script>
+<script src="methodsnet_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="methodsnet_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="methodsnet_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="methodsnet_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="methodsnet_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.3.427">
+
+  <meta name="author" content="Caspar J. van Lissa">
+  <meta name="dcterms.date" content="2025-02-10">
+  <title>Accounting for Heterogeneity in Meta-Analysis</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="methodsnet_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="methodsnet_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
+  <link rel="stylesheet" href="methodsnet_files/libs/revealjs/dist/theme/quarto.css">
+  <link href="methodsnet_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="methodsnet_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="methodsnet_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="methodsnet_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <script src="methodsnet_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="methodsnet_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <link href="methodsnet_files/libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
+  <script src="methodsnet_files/libs/bsTable-3.3.7/bootstrapTable.js"></script>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Accounting for Heterogeneity in Meta-Analysis</h1>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Caspar J. van Lissa 
+</div>
+</div>
+</div>
+
+  <p class="date">2025-02-10</p>
+</section>
+<section class="slide level2">
+
+<!--
+Siddaway, A. P., Wood, A. M., & Hedges, L. V. (2019). How to do a systematic review: a best practice guide for conducting and reporting narrative reviews, meta-analyses, and meta-syntheses. Annual review of psychology, 70, 747-770.-->
+<!-- Janneke Staaks - Systematic Review Search Support https://osf.io/49t8x/-->
+<!--# Meta-analysis using R
+
+Reading data,
+Running the analysis
+Forest plot
+Exporting results
+-->
+<!--mistakes in the selection of a statistical model, and mistakes
+in interpreting the mean effect and its confidence interval.-->
+</section>
+<section>
+<section id="meta-analysis" class="title-slide slide level1 center">
+<h1>Meta-Analysis</h1>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<ul>
+<li>Use your own data for worked examples
+<ul>
+<li>Demo data are available</li>
+</ul></li>
+</ul>
+<ol type="1">
+<li>20 minutes: Basic Models for Meta-Analysis</li>
+<li>10 minutes: Q&amp;A</li>
+<li>30 minutes: Exercises</li>
+<li>20 minutes: Advanced Methods for Dealing with Heterogeneity</li>
+<li>10 minutes: Q&amp;A</li>
+<li>30 minutes: Exercises</li>
+</ol>
+<!-- * Each 90-minute session begins with a 20 minute introductory lecture, followed by 10 minutes of Q&A. Then follow two 30 minute exercise blocks, guided by an online coursebook with instructions, code, and formative self-assessment questions. The workshop chair walks around to support students. The last 10 minutes of each exercise block consist of discussion and peer feedback to resolve any sticking points. -->
+<!-- Presentations: The first 30-minute presentation covers the basic models for meta-analysis (fixed-effect and random effects analysis), meta-regression, and Bayesian penalized meta-regression. The second 30-minute presentation covers random forest meta-analysis and the Product Bayes Factor. -->
+<!-- Moderation approach: After the exercise blocks, the workshop chair facilitates knowledge exchange among participants so they resolve each other's sticking points. Only as a last resort does the chair step in to provide answers. -->
+<!-- Convenor's Biographies: Dr. Caspar J. Van Lissa is associate professor of social data science at Tilburg University, the Netherlands and associate editor for Research Synthesis Methods. He has developed machine learning-based evidence synthesis methods for dealing with heterogeneity in meta-analysis, combining evidence from heterogeneous studies, and qualitative research synthesis methods using text mining. He serves as board member of Tilburg Young Academy and chair of the Tilburg Open Science Community. -->
+</section>
+<section id="intro" class="slide level2 smaller">
+<h2>Intro</h2>
+<p>I’m going climbing with two groups of friends</p>
+<p>One person from each group tells me the average level of their group (French grade)</p>
+<p>I will choose a route based on the average level of all friends</p>
+<p><span class="math display">\[
+\begin{aligned}
+X_1:&amp; [5, 5, 6, 6, 5] &amp;M_1 &amp;= 5.4 \\
+X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
+\end{aligned}
+\]</span> What is the overall mean?</p>
+<p><span class="math inline">\(\frac{5.4+6}{2} = 5.7\)</span> VS <span class="math inline">\(\frac{5.2}{5} + \frac{6.5}{2} = 4.08\)</span></p>
+<p>Meta-analysis similarly calculates a weighted mean of the effect sizes.</p>
+<p><strong>Note: Second group has high variability!</strong></p>
+</section>
+<section id="definition" class="slide level2">
+<h2>Definition</h2>
+<p>Statistical procedures for synthesizing results of previous research to arrive at conclusions about the body of research.</p>
+<ul>
+<li>Quantitative: numbers</li>
+<li>Systematic: methodical</li>
+<li>Combining: putting together</li>
+<li>Previous research: whats already done</li>
+<li>Conclusions: new knowledge</li>
+</ul>
+</section>
+<section id="evidence-pyramid" class="slide level2">
+<h2>Evidence pyramid</h2>
+
+<img data-src="./materials/evidence_pyramid.png" style="width:100.0%" class="r-stretch"></section>
+<section id="cases-and-variables" class="slide level2">
+<h2>Cases and variables</h2>
+<p>In primary research:</p>
+<ul>
+<li>Cases: Individual participants</li>
+<li>Variables: Characteristics / individual differences</li>
+</ul>
+<p>In meta-analysis:</p>
+<ul>
+<li>Cases: Studies, or effect sizes</li>
+<li>Variables: Between-study differences, or ‘moderators’</li>
+</ul>
+<p><font color="red">Not covered:</font>Individual participant data meta-analysis</p>
+<ul>
+<li>Cases: Individual participants</li>
+</ul>
+</section>
+<section id="history-pearson" class="slide level2">
+<h2>History: Pearson</h2>
+<p>Karl Pearson (1904)</p>
+<ul>
+<li>Studies on efficacy of typhoid vaccination</li>
+<li><em>“Many of the groups… are far too small to allow of any definite opinion being formed at all, having regard to the size of the probable error involved.”</em></li>
+</ul>
+</section>
+<section id="history" class="slide level2">
+<h2>History</h2>
+<p>Shift from narrative reviews to systematic reviews:</p>
+<ul>
+<li>1950: Eysenk concludes psychotherapy does not work
+<ul>
+<li>No consensus: 25 years of evaluation research, hundreds of studies</li>
+</ul></li>
+<li>1978: Gene V. Glass aggregates findings of 375 intervention studies
+<ul>
+<li>Introduces term “meta-analysis”</li>
+<li>“On the average, the typical therapy client is better off than 75% of untreated individuals”</li>
+</ul></li>
+<li>Early 1990s: Rise of meta-analysis</li>
+<li>Now: Gold standard of evidence</li>
+</ul>
+</section>
+<section id="distinct-from-lit-review" class="slide level2">
+<h2>Distinct from lit review</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover" data-quarto-postprocess="true" style="margin-left: auto; margin-right: auto;">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Traditional Review</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Systematic Review</th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Meta-analysis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Author</td>
+<td style="text-align: left;">Individual</td>
+<td style="text-align: left;">Team</td>
+<td style="text-align: left;">Team</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Search</td>
+<td style="text-align: left;">Unguided/motivated</td>
+<td style="text-align: left;">Protocol</td>
+<td style="text-align: left;">Protocol</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Conclusion</td>
+<td style="text-align: left;">Author's judgment</td>
+<td style="text-align: left;">Qualitative</td>
+<td style="text-align: left;">Statistical</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+</section>
+<section id="popularity" class="slide level2">
+<h2>Popularity</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="./materials/popularity.png" style="height:100.0%"></p>
+</div>
+</div>
+</section>
+<section id="popularity-1" class="slide level2">
+<h2>Popularity</h2>
+<p>Popularity of this method has grown tremendously <span class="citation" data-cites="ioannidisMassProductionRedundant2016">(<a href="#/references" role="doc-biblioref" onclick="">Ioannidis 2016</a>)</span></p>
+<p>Why?</p>
+<ol type="1">
+<li>Output of primary research keeps increasing <span class="citation" data-cites="bornmannGrowthRatesModern2015">(<a href="#/references" role="doc-biblioref" onclick="">Bornmann and Mutz 2015</a>)</span></li>
+<li>“Replication crisis” increased demand for reliable findings</li>
+<li>Incentives:
+<ul>
+<li>Limited effort and cost</li>
+<li>Highly cited and respected</li>
+</ul></li>
+</ol>
+</section>
+<section id="goals-of-meta-analysis" class="slide level2">
+<h2>Goals of meta-analysis</h2>
+<ol type="1">
+<li>Summarize effect</li>
+<li>Increase statistical power and precision</li>
+<li>Develop, refine and test hypothesis</li>
+<li>Reduce the subjectivity of study comparisons by using systematic and explicit comparison procedure</li>
+<li>Identify gap in knowledge base and directions for future research</li>
+<li>Power analysis for future studies</li>
+<li><em>Identify heterogeneity</em></li>
+<li><em>Account for heterogeneity</em></li>
+</ol>
+</section>
+<section id="steps-in-meta-analysis" class="slide level2">
+<h2>Steps in meta-analysis</h2>
+<ol type="1">
+<li>Define research question and hypotheses</li>
+<li>Define the criteria for including and excluding studies</li>
+<li>Conduct search</li>
+<li>Determine eligibility</li>
+<li>Code effect size and moderators</li>
+<li>Select or translate results from each study using a common metric</li>
+<li><strong>Estimate overall effect size</strong></li>
+<li><strong>Evaluate heterogeneity</strong></li>
+<li><strong>Explore heterogeneity</strong></li>
+<li>Sensitivity analyses</li>
+</ol>
+<!--to assess the impact of excluding or down-weighting unpublished studies, studies of lower quality, out-of-date studies, etc.-->
+</section></section>
+<section>
+<section id="effect-sizes" class="title-slide slide level1 center">
+<h1>Effect sizes</h1>
+
+</section>
+<section id="what-effect-sizes" class="slide level2 smaler">
+<h2>What effect sizes?</h2>
+<p>The effect size is the unit of analysis in a meta-analysis.</p>
+<ul>
+<li>“Descriptive” statistics (mean, SD, p, Cronbach’s alpha)</li>
+<li>Differences between groups
+<ul>
+<li>Mean difference (between groups, repeated measures)</li>
+<li>Difference in over-time change between groups</li>
+<li>Risk ratio</li>
+</ul></li>
+<li>Association
+<ul>
+<li>Correlation</li>
+<li>Regression coefficient</li>
+</ul></li>
+<li>Etc.: any statistic with standard error</li>
+</ul>
+</section>
+<section id="effect-sizes-what-do-you-need" class="slide level2">
+<h2>Effect sizes: What do you need?</h2>
+<ul>
+<li>Study must report the required effect size…</li>
+<li>…or sufficient statistics to compute it</li>
+<li>You can convert from some effect sizes to others</li>
+</ul>
+<p>Resources for converting:</p>
+<ul>
+<li><a href="https://campbellcollaboration.org/media/k2/attachments/converting_between_effect_sizes.pdf">Campbell collaboration PDF</a></li>
+<li><a href="https://osf.io/vbdah/">Daniel Lakens’ spreadsheet</a></li>
+</ul>
+</section>
+<section id="effect-sizes-pitfals" class="slide level2">
+<h2>Effect sizes: Pitfals</h2>
+<ul>
+<li>Control variables</li>
+<li>Dependency in the data (e.g., repeated measures, multiple studies on same dataset)</li>
+</ul>
+</section></section>
+<section>
+<section id="averaging-studies" class="title-slide slide level1 center">
+<h1>Averaging studies</h1>
+
+</section>
+<section id="how-to-combine" class="slide level2">
+<h2>How to combine?</h2>
+<p>Starting with the summary statistic for each study, how should we combine these??</p>
+<p>A simple average gives each study equal weight</p>
+<p>This seems intuitively wrong</p>
+<p>All studies are created equal.. but some are more equal than others</p>
+</section>
+<section id="weighting-studies" class="slide level2">
+<h2>Weighting studies</h2>
+<p>More weight for more informative studies</p>
+<ul>
+<li>More participants</li>
+<li>Lower variance</li>
+</ul>
+<p>This is reflected in the sampling variance (standard error)</p>
+</section>
+<section id="effect-sizes-standard-error" class="slide level2 smaller">
+<h2>Effect sizes: Standard error</h2>
+<p>Standard error affects the weighting in meta-analysis</p>
+<p>Also referred to as <strong>sampling variance</strong></p>
+<ul>
+<li>SE is the SD of the sampling distribution</li>
+<li><span class="math inline">\(SE^2\)</span> is the variance of the sampling distribution</li>
+<li>It is a measure of precision / uncertainty about the sample statistic as an estimator of the population value</li>
+<li>Small SE: Accurate estimate</li>
+<li>Big SE: Uncertain estimate</li>
+</ul>
+<p>E.g., SE of the mean:</p>
+<p><span class="math display">\[SE_\mu = \frac{SD}{\sqrt{n}}\]</span></p>
+</section>
+<section id="effect-sizes-sampling-distribution" class="slide level2">
+<h2>Effect sizes: Sampling distribution</h2>
+<iframe width="1000" height="700" src="https://rpsychologist.com/d3/CI/" title="Sampling Distribution"></iframe>
+</section>
+<section id="effect-sizes-sampling-distribution-1" class="slide level2">
+<h2>Effect sizes: Sampling distribution</h2>
+<iframe width="1000" height="700" src="https://utrecht-university.shinyapps.io/cjvanlissa_sampling_distribution" title="Sampling Distribution"></iframe>
+</section>
+<section id="weighting-studies-inverse-variance" class="slide level2">
+<h2>Weighting studies: Inverse-variance</h2>
+<p>Inverse-variance method:</p>
+<p><span class="math display">\[
+W_i = \frac{1}{v_i} = \frac{1}{SE^2_i}
+\]</span></p>
+<p>More precise study: Bigger weight</p>
+</section>
+<section id="effect-sizes-finding-the-se" class="slide level2">
+<h2>Effect sizes: Finding the SE</h2>
+<p>Standard error is usually based on:</p>
+<ul>
+<li>Relevant measures of variability (more variable –&gt; bigger SE)</li>
+<li>Sample size (bigger sample –&gt; smaller SE)</li>
+</ul>
+<p>SE is almost always reported for</p>
+<ul>
+<li>E.g., regression coefficients</li>
+</ul>
+<p>For other statistics, SE is almost never reported:</p>
+<ul>
+<li>Correlation (but easily constructed from <span class="math inline">\(r\)</span> and <span class="math inline">\(n\)</span>)</li>
+<li>Cronbach’s alpha</li>
+</ul>
+<p><strong>Familiarize yourself with the formula for the SE of your effect size BEFORE you collect data!</strong></p>
+</section></section>
+<section>
+<section id="calculating-weighted-average" class="title-slide slide level1 center">
+<h1>Calculating weighted average</h1>
+
+</section>
+<section id="fixed-effect-model" class="slide level2">
+<h2>Fixed effect model</h2>
+<p>Assumption: true effect is the same in each study (fixed) (Hedges, 1998)</p>
+<p>Differences between studies due to random (sampling) error</p>
+<p>This assumption probably (?) holds for:</p>
+<ul>
+<li>Replication studies</li>
+<li>Multiple studies within one paper</li>
+</ul>
+</section>
+<section id="fixed-effect-formulas" class="slide level2">
+<h2>Fixed effect: Formulas</h2>
+<p>For a collection of <span class="math inline">\(k\)</span> studies, the observed effect size <span class="math inline">\(y_i\)</span> of each individual study <span class="math inline">\(i\)</span> (for <span class="math inline">\(i = 1, 2, \dots k\)</span>) is given by:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_i &amp;= \theta + \epsilon_i &amp;\text{where } \epsilon_i \sim N(0, \sigma^2_i)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="fixed-effect-pooling" class="slide level2">
+<h2>Fixed effect: pooling</h2>
+<p>Inverse-variance weights</p>
+<p>Variance is the <span class="math inline">\(SE^2\)</span></p>
+<p><span class="math display">\[ W_i = \frac{1}{v_i}\]</span></p>
+<p>Summary effect:</p>
+<p><span class="math display">\[\hat{\theta} = \frac{\sum_{i=1}^{k}(W_i*y_i)}{\sum_{i=1}^{k}W_i}\]</span></p>
+</section></section>
+<section>
+<section id="heterogeneity" class="title-slide slide level1 center">
+<h1>Heterogeneity</h1>
+<p>What is heterogeneity?</p>
+<p>How to deal with heterogeneity?</p>
+<p>Interpreting heterogeneity indices</p>
+</section>
+<section id="heterogeneity-1" class="slide level2">
+<h2>Heterogeneity</h2>
+<p>Common application of meta-analysis:</p>
+<ul>
+<li>Summarizing heterogenous body of literature</li>
+</ul>
+<p>Differences between studies with respect to:</p>
+<ul>
+<li>Patients: diagnosis, in- and exclusion criteria, etc.</li>
+<li>Interventions: type, dose, duration, etc.</li>
+<li>Outcomes: type, scale, cut-off points, duration of follow-up, etc.</li>
+<li>Quality and methodology: randomised or not, allocation concealment, blinding, etc.</li>
+</ul>
+<p>Meta-analysis is <strong>not</strong> immune to small sample problems (small N, many moderators p)</p>
+</section>
+<section id="how-to-deal-with-heterogeneity" class="slide level2">
+<h2>How to deal with heterogeneity</h2>
+<ol type="1">
+<li>Do not pool at all (apples / oranges)</li>
+<li>Ignore heterogeneity: fixed effect model</li>
+<li>Allow for random heterogeneity: random effects model</li>
+<li>Explain heterogeneity
+<ul>
+<li>Meta-regression</li>
+</ul></li>
+<li><em>Explore heterogeneity</em>
+<ul>
+<li>Regularized meta-regression</li>
+<li>Random Forest meta-regression</li>
+</ul></li>
+<li><em>Aggregate evidence, not estimates</em>
+<ul>
+<li>Product Bayes Factor</li>
+</ul></li>
+</ol>
+</section>
+<section id="random-effects-model" class="slide level2">
+<h2>Random effects model</h2>
+<p>Assumption: True effect follows (normal) distribution</p>
+<p>Differences between observed effect sizes arise from two sources of variance:</p>
+<ul>
+<li>Sampling error</li>
+<li>Normal distribution of true effect sizes
+<ul>
+<li>Between-studies heterogeneity</li>
+<li>Variance of the distribution</li>
+</ul></li>
+</ul>
+<p>Assumption holds:</p>
+<ul>
+<li>When there are no systematic differences between studies</li>
+</ul>
+</section>
+<section id="random-effects-formulas" class="slide level2">
+<h2>Random effects: Formulas</h2>
+<p>The random-effects model is thus given by:</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \sigma^2_i)\\
+\theta_i &amp;= \mu + \zeta_i &amp;\text{where } \zeta_i &amp;\sim N(0, \tau^2)
+\end{aligned}
+\]</span></p>
+<p>Results in wider confidence intervals (conservative)</p>
+<p>Studies are <strong>weighted more equally</strong> when between-studies heterogeneity is large</p>
+</section>
+<section id="random-effects-weights" class="slide level2">
+<h2>Random effects weights</h2>
+<p>Two sources of variance:</p>
+<p><span class="math display">\[ W_i = \frac{1}{v_i+\tau^2}\]</span></p>
+<p>Summary effect:</p>
+<p><span class="math display">\[\hat{\theta} = \frac{\sum_{i=1}^{k}(W_i*y_i)}{\sum_{i=1}^{k}W_i}\]</span></p>
+</section>
+<section id="heterogeneity-statistics-tau2" class="slide level2">
+<h2>Heterogeneity statistics: tau2</h2>
+<p><span class="math inline">\(\tau^2\)</span> is the (estimated) variance of the distribution of true effect sizes</p>
+<p>It is expressed in the same units as the within-studies variance</p>
+</section>
+<section id="heterogeneity-statistics-q" class="slide level2">
+<h2>Heterogeneity statistics: Q</h2>
+<p>Q is a weighted sum of squared deviations of observed effect sizes around the pooled effect size</p>
+<ul>
+<li>Test of Q has poor power</li>
+<li>People sometimes use <span class="math inline">\(\alpha = .10\)</span>
+<ul>
+<li>But: Few studies - usually not significant</li>
+<li>Many studies - essentially always heterogeneity</li>
+<li>So, not very useful</li>
+</ul></li>
+</ul>
+<p><span class="math inline">\(Q = \sum_{i=1}^{k}W_i*(y_i-\hat{\theta})^2\)</span></p>
+</section>
+<section id="heterogeneity-statistics-i2" class="slide level2">
+<h2>Heterogeneity statistics: I2</h2>
+<p><span class="math inline">\(I^2\)</span> describes the percentage of variation across studies that is due to heterogeneity rather than chance (Higgins and Thompson, 2002; Higgins et al., 2003).</p>
+<ul>
+<li>Are individual effects further away from pooled effect, beyond what is expected by chance?</li>
+</ul>
+<p><span class="math display">\[I^2 = 100\% * \frac{Q-df}{Q}\]</span></p>
+<ul>
+<li>Unlike Q it does not inherently depend upon the number of studies considered (standardized)</li>
+<li><strong>But no longer an absolute measure of heterogeneity!</strong></li>
+</ul>
+</section>
+<section id="heterogeneity-2" class="slide level2">
+<h2>Heterogeneity</h2>
+<p>Low heterogeneity:</p>
+<ul>
+<li>Effect is robust</li>
+<li>Estimate true effect size with better precision than we could with a single study</li>
+</ul>
+<p>High heterogeneity:</p>
+<ul>
+<li>Quantify the variation</li>
+<li>Explore / explain it</li>
+</ul>
+</section>
+<section id="pitfalls" class="slide level2">
+<h2>Pitfalls</h2>
+<p><strong>Data-dependent analysis decisions</strong></p>
+<ol type="1">
+<li>Test for heterogeneity</li>
+<li><strong>If</strong> that test is not-significant, then use a fixed-effect model</li>
+</ol>
+<ul>
+<li>It is better to make assumptions on <strong>theoretical</strong> grounds</li>
+<li>And report assumption checks that suggest potential violations</li>
+<li>Otherwise you risk overfitting the data</li>
+</ul>
+</section></section>
+<section>
+<section id="moderators" class="title-slide slide level1 center">
+<h1>Moderators</h1>
+<p>Systematic differences between studies</p>
+</section>
+<section id="causes-for-heterogeneity" class="slide level2">
+<h2>Causes for heterogeneity</h2>
+<p>Comparing the effect size in different groups of studies</p>
+<ul>
+<li>Several scales used in your field</li>
+<li>Competing experimental paradigms</li>
+<li>Experimental VS cross-sectional research</li>
+<li>Standard dose VS high dose</li>
+<li>Experimental manipulation VS multi-week intervention</li>
+</ul>
+<p>You can <strong>code</strong> all these differences as <strong>moderator variables</strong></p>
+<p>Control for them in the analysis</p>
+<!-- ## Moderators: Multi-group -->
+<!-- Similar to a t-test / ANOVA: -->
+<!-- $$y_i = \hat{\mu}_1D_{1i} + \hat{\mu}_2D_{2i} + \epsilon_i$$ -->
+<!-- In meta-analysis: -->
+<!-- $$\theta_i = \hat{\gamma}_1D_{1i} + \hat{\gamma}_2D_{2i} + \zeta_i + \epsilon_i$$ -->
+<!-- Where $D$ are dummy variables.  -->
+<!-- Assumption: Homoscedasticity of heterogeneity -->
+</section>
+<section id="meta-regression" class="slide level2">
+<h2>Meta-regression</h2>
+<p><span class="math display">\[\theta_i = \beta_0 + \beta_1X_{1i} + \dots + \beta_pX_{pi} + \zeta_i + \epsilon_i\]</span></p>
+<p>Really the same as normal regression analysis, but with an extra “error” term for the heterogeneity:</p>
+<p><span class="math display">\[y_i = \beta_0 + \beta_1X_{1i} + \dots + \beta_pX_{pi} + \epsilon_i\]</span></p>
+</section>
+<section id="moderators-dummies-in-meta-regression" class="slide level2">
+<h2>Moderators: Dummies in meta-regression</h2>
+<p>The effect of a grouping-variable can be expressed two ways.</p>
+<p>By estimating both group means, using two dummies and no intercept:</p>
+<p><span class="math display">\[\theta_i = \hat{\gamma}_1D_{1i} + \hat{\gamma}_2D_{2i} + \zeta_i + \epsilon_i\]</span></p>
+<p>By estimating one intercept, reflecting the mean value of group one, and a dummy, reflecting the difference between group one and two:</p>
+<p><span class="math display">\[\theta_i = \beta_0 + \beta_1D_{1i} + \zeta_i + \epsilon_i\]</span></p>
+<p>Mathematically, they are identical. We can call the first one “ANOVA specification”, and the second one “regression specification”</p>
+</section></section>
+<section>
+<section id="second-presentation" class="title-slide slide level1 center">
+<h1>Second Presentation</h1>
+
+</section>
+<section id="moderators-remaining-issues" class="slide level2">
+<h2>Moderators: Remaining issues</h2>
+<ul>
+<li>Often small sample, many predictors (n &lt; p)</li>
+<li>Power issues</li>
+<li>Interactions? Non-linear effects?</li>
+<li>Lack of theory to identify moderators
+<ul>
+<li>Moderator analysis is often exploratory</li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="machine-learning-informed-moderator-selection" class="title-slide slide level1 center">
+<h1>Machine Learning-Informed Moderator Selection</h1>
+<p>Regularized meta-regression Random forest meta-regression</p>
+</section>
+<section id="the-challenge" class="slide level2">
+<h2>The challenge</h2>
+<p>When meta-analyzing existing bodies of literature, there are many between-studies differences</p>
+<p>Differences in samples, designs, measurements, and methods</p>
+<p>The number of potential moderators is large relative to the number of studies (n&lt;p)</p>
+</section>
+<section id="accounting-for-heterogeneity" class="slide level2 smaller">
+<h2>Accounting for Heterogeneity</h2>
+<ol type="1">
+<li>Studies are (close) replications
+<ul>
+<li>One true population effect size</li>
+<li>Fixed effect model</li>
+</ul></li>
+<li>Similar studies, but not identical
+<ul>
+<li>Differences due to many uncorrelated factors</li>
+<li>A (normal) distribution of population effect sizes with mean and variance</li>
+<li>Random effects model</li>
+</ul></li>
+<li>Known systematic differences between studies
+<ul>
+<li>Use as exclusion criteria</li>
+<li>Code as moderating variables</li>
+<li>Meta-regression (Higgins et al., 2009)</li>
+</ul></li>
+<li>Suspected differences between studies
+<ul>
+<li>Exploratory moderator analysis</li>
+</ul></li>
+</ol>
+</section>
+<section id="curse-of-dimensionality" class="slide level2">
+<h2>Curse of Dimensionality</h2>
+<p>https://cjvanlissa.shinyapps.io/Polynomials/</p>
+</section>
+<section id="which-moderators-matter" class="slide level2">
+<h2>Which Moderators Matter?</h2>
+<ul>
+<li>Use theory
+<ul>
+<li>Few theories address study-level moderators Thompson &amp; Higgins, 2002
+<ul>
+<li>Ecological fallacy: individual level vs study level</li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="statistical-solutions" class="slide level2">
+<h2>Statistical solutions</h2>
+<ul>
+<li>(Bivariate) null-hypothesis significance tests
+<ul>
+<li>P-values are not designed for model selection, but for inference on a-priori hypotheses</li>
+<li>Multiple testing problem</li>
+<li>Overfitting</li>
+<li>P-value depends on all other variables in model</li>
+</ul></li>
+<li>Information criteria
+<ul>
+<li>Does penalize for model complexity</li>
+<li>Avoids multiple testing</li>
+<li>Must explicitly define candidate models</li>
+</ul></li>
+<li>“Variable selection”
+<ul>
+<li>Focal issue in machine learning (Hastie, Tibshirani, &amp; Friedman, 2009)</li>
+</ul></li>
+</ul>
+</section>
+<section id="regularized-meta-regression" class="slide level2">
+<h2>Regularized meta-regression</h2>
+<p><span class="math display">\[
+T_i = \beta_0 + \beta_1x_1 + \ldots + \beta_px_p + \zeta_i + \epsilon_i
+\]</span> Typically estimated using REML</p>
+<p><span class="math display">\[
+RSS = \sum^n_{i=1}(y_i-\hat{y_i})^2
+\]</span></p>
+<ul>
+<li>Minimizes the RSS</li>
+<li>Low bias, on average, coefficients are close to true value</li>
+<li>High variance: estimated coefficients vary from one sample to the next</li>
+</ul>
+</section>
+<section id="regularization" class="slide level2">
+<h2>Regularization</h2>
+<p>Tradeoff between bias and variance</p>
+<p>Regularization decreases variance by increasing bias</p>
+<p>LASSO regression minimizes RSS plus sum of (absolute) coefficients</p>
+<p><span class="math display">\[
+PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
+\]</span></p>
+</section>
+<section id="bayesian-regularization" class="slide level2">
+<h2>Bayesian Regularization</h2>
+<ul>
+<li>Combines information from data with prior expectations about parameter values</li>
+<li>LASSO penalty corresponds to a double exponential prior (Park &amp; Casella, 2008)
+<ul>
+<li>I.e.: “I expect most coefficients to be (near) zero”</li>
+</ul></li>
+<li>Valid inference for all model parameters and derived quantities</li>
+<li>Intuitive interpretation</li>
+<li>Can be extended to OTHER regularizing priors with superior performance
+<ul>
+<li>Horseshoe prior has heavier tails (Carvalho, Polson, &amp; Scott, 2010)</li>
+</ul></li>
+<li>Can be estimated in existing software (STAN)</li>
+</ul>
+</section>
+<section id="introducing-brma" class="slide level2">
+<h2>Introducing <code>brma</code></h2>
+<p>R-package pema (penalized meta-analysis) implements BRMA with back-end in STAN</p>
+<ul>
+<li>Compiled code makes this package very fast and easy to install</li>
+<li>Compatible with rstan and related packages</li>
+<li>All plots and summary functions are available</li>
+<li>Validated using simulation study (Van Lissa, Van Erp, &amp; Clapper, 2023)</li>
+<li>LASSO and Horseshoe priors VS restricted maximum likelihood meta-regression (metafor)</li>
+<li><a href="https://DOI.org/10.1002/jrsm.1628" class="uri">https://DOI.org/10.1002/jrsm.1628</a></li>
+</ul>
+</section>
+<section id="performance" class="slide level2">
+<h2>Performance</h2>
+<p>Compared to RMA, BRMA showed:</p>
+<ul>
+<li>Better predictive performance (R2 in a new sample)</li>
+<li>Less overfitting (i.e., less negative R2 in new sample)</li>
+<li>Better small sample performance (RMA convergence issues)</li>
+<li>Higher sensitivity (better at rejecting irrelevant moderators)</li>
+<li>Lower specificity (worse at detecting true moderators)</li>
+<li>Overall accuracy: RMA = 0.95, HS = 0.95, LASSO = 0.93</li>
+<li>Regression coefficients biased towards zero, by design
+<ul>
+<li>But all algorithms showed bias, even RMA</li>
+</ul></li>
+<li>Residual heterogeneity: no additional bias</li>
+</ul>
+<p>Conclusions</p>
+<ul>
+<li>Helps eliminate irrelevant moderators / prevent overfitting</li>
+<li>Suitable small sample solution</li>
+<li>Readily interpretable for reviewers and readers</li>
+<li>Can accommodate predictors of any measurement level</li>
+<li>Readily available in user friendly software</li>
+</ul>
+</section>
+<section id="tree-based-methods" class="slide level2">
+<h2>Tree-based methods</h2>
+<pre><code>Tree algorithm
+
+1. Split the data on the moderator/value that leads to the most  
+   homogenous post-split groups on the dependent variable
+2. IF the number of cases in the post-split group is smaller than X, stop
+    - Else, repeat steps for the post-split group</code></pre>
+</section>
+<section id="tree" class="slide level2">
+<h2>Tree</h2>
+
+<img data-src="./materials/tree1.png" style="width:70.0%" class="r-stretch"></section>
+<section id="tree-1" class="slide level2">
+<h2>Tree</h2>
+
+<img data-src="./materials/tree2.png" style="width:70.0%" class="r-stretch"></section>
+<section id="tree-2" class="slide level2">
+<h2>Tree</h2>
+
+<img data-src="./materials/tree3.png" style="width:70.0%" class="r-stretch"></section>
+<section id="tree-3" class="slide level2">
+<h2>Tree</h2>
+
+<img data-src="./materials/tree4.png" style="width:70.0%" class="r-stretch"></section>
+<section id="tree-4" class="slide level2">
+<h2>Tree</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="./materials/tree6.png" style="height:100.0%"></p>
+</div>
+</div>
+</section>
+<section id="tree-advantages" class="slide level2">
+<h2>Tree: Advantages</h2>
+<ul>
+<li>Trees easily handle situations where <span class="math inline">\(n&lt;p\)</span>
+<ul>
+<li>Irrelevant predictors are ignored</li>
+</ul></li>
+<li>Trees intrinsically capture interactions and non-linear effects
+<ul>
+<li>Represented as sequence of splits</li>
+</ul></li>
+<li>Both conditions are likely met when meta-analyzing a heterogeneous body of literature</li>
+</ul>
+</section>
+<section id="random-forests" class="slide level2">
+<h2>Random forests</h2>
+<p>Single trees are very prone to overfitting</p>
+<pre><code>Random Forests algorithm
+
+1. Draw many (+/-1000) bootstrap samples
+2. Grow a trees on each bootstrap sample
+3. To make sure each tree learns something unique, 
+   they are only allowed to choose the best moderator  
+   from a small random selection of moderators at each split
+4. Average the predictions of all these trees</code></pre>
+</section>
+<section id="random-forests-advantages" class="slide level2">
+<h2>Random forests: Advantages</h2>
+<p>Random forests are robust to overfitting</p>
+<ul>
+<li>Each tree captures some “true” effects and some idiosyncratic noise</li>
+<li>Noise averages out across bootstrap samples</li>
+</ul>
+<p>Random forests make better predictions than single trees</p>
+<ul>
+<li>Single trees predict a constant value for each “node”</li>
+<li>Forests average predictions of many trees, leading to smooth prediction curves</li>
+</ul>
+</section>
+<section id="metaforest" class="slide level2">
+<h2>MetaForest</h2>
+<p>Apply meta-analytic weights to random forests (in bootstrapping step)</p>
+<p>More precise studies are more influential in building the model</p>
+</section>
+<section id="metaforest-reporting" class="slide level2">
+<h2>MetaForest: Reporting</h2>
+<ul>
+<li>Predictive <span class="math inline">\(R^2\)</span> for new data: <span class="math inline">\(R^2_{oob}\)</span> and <span class="math inline">\(R^2_{cv}\)</span></li>
+<li>Variable importance (which moderators most strongly predict effect size)</li>
+<li>Partial dependence plots</li>
+</ul>
+</section>
+<section id="metaforest-variable-importance" class="slide level2">
+<h2>MetaForest: Variable Importance</h2>
+
+<img data-src="./materials/varimp.png" style="width:90.0%" class="r-stretch"></section>
+<section id="metaforest-partial-dependence" class="slide level2">
+<h2>MetaForest: Partial Dependence</h2>
+
+<img data-src="./materials/pdp1.png" style="width:100.0%" class="r-stretch"></section>
+<section id="metaforest-partial-dependence-1" class="slide level2">
+<h2>MetaForest: Partial Dependence</h2>
+
+<img data-src="./materials/pdp_mod.png" style="width:80.0%" class="r-stretch"></section>
+<section id="metaforest-validation" class="slide level2">
+<h2>MetaForest: Validation</h2>
+<p>Several simulation studies examining:</p>
+<ul>
+<li>Predictive performance</li>
+<li>Power</li>
+<li>Ability to identify relevant / irrelevant moderators</li>
+<li>Van Lissa, 2017: https://osf.io/khjgb/</li>
+</ul>
+</section>
+<section id="metaforest-results" class="slide level2">
+<h2>MetaForest: Results</h2>
+<p>MetaForest had sufficient power in most conditions, even for as little as 20 studies,</p>
+<ul>
+<li>Except when the effect size was small (β = 0.2), and residual heterogeneity was high (τ2 = 0.28)</li>
+</ul>
+<p>Power was most affected by true effect size and residual heterogeneity, followed by the true underlying model</p>
+</section>
+<section id="metaforest-workflow" class="slide level2">
+<h2>MetaForest: Workflow</h2>
+<p>As final check:</p>
+<ol type="1">
+<li>Classic meta-analysis for summary effect</li>
+<li>(Optional:) Test theoretical moderators</li>
+<li>MetaForest as exploratory check for relevant moderators</li>
+</ol>
+<p>As pre-screening:</p>
+<ol type="1">
+<li>MetaForest as exploratory check for relevant moderators</li>
+<li>(Optional:) Test linear model of relevant moderators</li>
+<li>Classic meta-analysis for summary effect</li>
+</ol>
+</section></section>
+<section>
+<section id="publication-bias" class="title-slide slide level1 center">
+<h1>Publication bias</h1>
+
+</section>
+<section id="publication-bias-1" class="slide level2">
+<h2>Publication bias</h2>
+<p>Assumption: Significant results are more likely to be published</p>
+<ul>
+<li>Well-supported by research</li>
+</ul>
+<p><span class="math inline">\(\alpha = .05\)</span>: We accept 5% risk of false-positive findings (Type I error)</p>
+<p>Worst case scenario:</p>
+<ul>
+<li>Published literature is that 5%</li>
+<li>95% of studies go into the “file drawer”</li>
+</ul>
+<p>Including only published studies can introduce <strong>publication bias</strong></p>
+</section>
+<section id="publication-bias-detecting-it" class="slide level2">
+<h2>Publication bias: Detecting it</h2>
+<p>Funnel plots</p>
+<ul>
+<li>X = effect size</li>
+<li>Y = SE (as a measure of uncertainty)</li>
+</ul>
+</section>
+<section id="publication-bias-funnel-plot" class="slide level2">
+<h2>Publication bias: Funnel plot</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load the Happy to Help? Data</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">data</span>(curry)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Random effects meta-analysis</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>model <span class="ot">&lt;-</span> <span class="fu">rma</span>(d, vi, <span class="at">data =</span> curry)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co"># Funnel plot</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">funnel</span>(model, </span>
+<span id="cb3-7"><a href="#cb3-7"></a>       <span class="at">back =</span> <span class="st">"white"</span>, </span>
+<span id="cb3-8"><a href="#cb3-8"></a>       <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">99</span>),</span>
+<span id="cb3-9"><a href="#cb3-9"></a>       <span class="at">shade =</span> <span class="fu">c</span>(<span class="st">"white"</span>, <span class="st">"gray"</span>, <span class="st">"darkgray"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="publication-bias-funnel-plot-1" class="slide level2">
+<h2>Publication bias: Funnel plot</h2>
+
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<section id="publication-bias-funnel-with-bias" class="slide level2">
+<h2>Publication bias: Funnel with bias</h2>
+
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<section id="publication-bias-detecting-it-1" class="slide level2">
+<h2>Publication bias: Detecting it</h2>
+<p>Egger test: Formal test of funnel asymmetry</p>
+<ul>
+<li>Predicting effect size from its standard error</li>
+</ul>
+<p>Trim and fill method:</p>
+<ul>
+<li>Small studies removed from funnel plot until it is symmetric</li>
+<li>Replace the small studies and balance them with studies on the opposite side of the funnel</li>
+</ul>
+</section>
+<section id="publication-bias-trim-and-fill" class="slide level2">
+<h2>Publication bias: Trim and fill</h2>
+
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<section id="publication-bias-file-drawer" class="slide level2">
+<h2>Publication bias: File drawer</h2>
+<p>File drawer analysis (Rosenthal, 1979):</p>
+<p>How many studies, averaging null results, would have to be added to reduce the combined significance level (p-value) to non-significance?</p>
+</section>
+<section id="publication-bias-p-curve" class="slide level2">
+<h2>Publication bias: P-curve</h2>
+<p>Different assumption:</p>
+<ul>
+<li>Publication bias occurs because researchers p-hack their analyses (Head et al.&nbsp;2015)</li>
+<li>New approach (Simonsohn, Simmons, and Nelson 2015)</li>
+<li>https://www.p-curve.com/</li>
+<li><strong>Still quite experimental</strong></li>
+</ul>
+
+<img data-src="materials/pcurve.png" style="width:65.0%" class="r-stretch"></section></section>
+<section>
+<section id="dependency-in-the-data" class="title-slide slide level1 center">
+<h1>Dependency in the data</h1>
+
+</section>
+<section id="dependent-data-multiple-samples" class="slide level2">
+<h2>Dependent data: Multiple samples</h2>
+<ul>
+<li>Effects for two or more independent subgroups</li>
+<li>Impact of a treatment for two (or more) independent samples</li>
+</ul>
+<p>Options:</p>
+<ol type="1">
+<li>Treat the samples as independent “studies”; there is no problem with dependency</li>
+<li>Merge the samples. E.g., males and females have been reported separately; all your other studies combine them
+<ul>
+<li>Use fixed-effect meta-analysis on the two (or more) subsamples</li>
+</ul></li>
+</ol>
+</section>
+<section id="dependent-data-multiple-outcomes" class="slide level2">
+<h2>Dependent data: Multiple outcomes</h2>
+<p>The same participants reported on</p>
+<ul>
+<li>Multiple outcomes</li>
+<li>Multiple time points</li>
+</ul>
+<p>Options:</p>
+<ol type="1">
+<li>Unweighted average of effect sizes <strong>and</strong> SEs within study
+<ul>
+<li>NOTE: You need the correlation between the different outcome variables</li>
+</ul></li>
+<li>Three-level multilevel meta-analysis</li>
+<li>Robust variance estimation</li>
+</ol>
+</section></section>
+<section>
+<section id="three-level-meta-analysis" class="title-slide slide level1 center">
+<h1>Three-level meta-analysis</h1>
+
+</section>
+<section id="meta-analysis-is-multilevel" class="slide level2">
+<h2>Meta-analysis IS multilevel</h2>
+
+<img data-src="materials/multilevel-model.png" style="width:100.0%" class="r-stretch"></section>
+<section id="three-level-meta-analysis-1" class="slide level2">
+<h2>Three-level meta-analysis</h2>
+
+<img data-src="materials/multilevel-model2.png" style="width:100.0%" class="r-stretch"></section>
+<section id="three-level-meta-analysis-formulas" class="slide level2">
+<h2>Three-level meta-analysis: Formulas</h2>
+<p><span class="math display">\[
+      \left.
+      \begin{aligned}
+        y_{jk} &amp;= \beta_{jk} + \epsilon_{jk} &amp;\text{where } \epsilon_{jk} &amp;\sim N(0, \sigma^2_{\epsilon_{jk}})\\
+        \beta_{jk} &amp;= \theta_k + w_{jk} &amp;\text{where } w_{jk} &amp;\sim N(0, \sigma^2_{w})\\
+        \theta_{k} &amp;= \delta + b_{k} &amp;\text{where } b_k &amp;\sim N(0, \sigma^2_{b})
+      \end{aligned}
+      \right\}
+\]</span></p>
+</section>
+<section id="three-level-meta-analysis-2" class="slide level2">
+<h2>Three-level meta-analysis</h2>
+<p>Advantage</p>
+<ul>
+<li>Account for dependent data</li>
+<li>No need to know sampling <strong>co</strong>variance for every pair of outcomes</li>
+<li>Can include predictors at effect-size and between-study level</li>
+</ul>
+<p>Assumption</p>
+<ul>
+<li>All sampling covariances are the same</li>
+</ul>
+</section></section>
+<section>
+<section id="sensitivity-analysis" class="title-slide slide level1 center">
+<h1>Sensitivity analysis</h1>
+
+</section>
+<section id="sensitivity-analyses" class="slide level2">
+<h2>Sensitivity analyses</h2>
+<p>So many statistical options</p>
+<p>Show that results are not affected by these decisions</p>
+<p>Informal comparisons, often in table</p>
+<p>Examples:</p>
+<ul>
+<li>Modifying the inclusion criteria ?</li>
+<li>Including and excluding questionable studies ?</li>
+<li>Including and excluding unpublished studies ?</li>
+<li>Weighting the analysis by study quality ?</li>
+<li>Trying different ways to impute missing data ?</li>
+<li>Ad each study, one by one, to see the change (or adding to forest plot)</li>
+</ul>
+</section>
+<section id="discussion-questions" class="slide level2">
+<h2>Discussion questions</h2>
+<p>When does it make sense to perform a meta-analysis?</p>
+<p>How many studies do we need?</p>
+<p>How similar do the studies need to be?</p>
+<p>What is the role of a cumulative meta-analysis?</p>
+<p>What if the meta-analysis appears to conflict with a large-scale study?</p>
+</section>
+<section id="conflicting-study" class="slide level2">
+<h2>Conflicting study</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="materials/conflict_trial.png" style="height:100.0%"></p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="criticisms" class="title-slide slide level1 center">
+<h1>Criticisms</h1>
+
+</section>
+<section id="criticisms-of-meta-analysis" class="slide level2">
+<h2>Criticisms of meta-analysis</h2>
+<ul>
+<li>1990 Charles Mann: future of meta-analysis
+<ul>
+<li>One person compared it to alchemy</li>
+<li>Another compared it to terrorism</li>
+</ul></li>
+<li>1993 New England Journal of Medicine:
+<ul>
+<li>Meta-analyses so likely to be flawed that it would be preferable to stick with narrative reviews</li>
+</ul></li>
+<li>2016 Ioannides:
+<ul>
+<li>Mass Production of Redundant, Misleading, &amp; Conflicted Meta-analyses</li>
+<li>China mass-produces meta-analyses, including on abandones areas of research</li>
+<li>Companies receive industry contracts to produce meta-analyses</li>
+<li>Many published meta-analyses have serious flaws</li>
+<li>Of the remaining, most have weak or insufficient evidence</li>
+</ul></li>
+</ul>
+</section>
+<section id="criticisms-literature-selection" class="slide level2">
+<h2>Criticisms: Literature selection</h2>
+<p>Meta-analysis reflects only whats published, searchable, or shared</p>
+<p>Studies are <strong>selected</strong>, not randomly sampled from all possible studies</p>
+<ul>
+<li>Violates assumption of random-effects model</li>
+</ul>
+<p>“Standing on the shoulders of giants”</p>
+<ul>
+<li>Researchers follow in each other’s footsteps; this causes unknown dependency in the data</li>
+</ul>
+</section>
+<section id="criticisms-ecological-falacy" class="slide level2">
+<h2>Criticisms: Ecological falacy</h2>
+<p>We usually care about effects on individuals</p>
+<p>Ecological fallacy:</p>
+<ul>
+<li>Can’t make inferences about individuals from statistics about the group as a whole</li>
+</ul>
+<p>Aggregation bias</p>
+<ul>
+<li>Pooled study-level effects might not reflect individual-level effects</li>
+</ul>
+</section>
+<section id="criticisms-repeated-testing" class="slide level2">
+<h2>Criticisms: Repeated testing</h2>
+<ul>
+<li>Trust only pre-planned analyses (ideally pre-registered)</li>
+<li>Testing effects suggested by data considerably increases risk of false-positive results</li>
+<li>Post hoc analysis should be deemed exploratory</li>
+<li>Correct the p-values for repeated testing (e.g., Bonferroni)</li>
+</ul>
+</section>
+<section id="criticisms-garbage" class="slide level2">
+<h2>Criticisms: Garbage</h2>
+<ul>
+<li>Garbage in / garbage out</li>
+<li>Make sure to check quality of included studies</li>
+<li>Consider quality as moderator</li>
+<li>To see if small (bad?) studies have an undue effect, compare fixed-effect / random-effects estimates</li>
+</ul>
+</section></section>
+<section>
+<section id="further-learning" class="title-slide slide level1 center">
+<h1>Further learning</h1>
+
+</section>
+<section id="general-preparation-reporting" class="slide level2">
+<h2>General preparation: Reporting</h2>
+<p>Familiarize yourself with reporting guidelines</p>
+<p><a href="http://www.prisma-statement.org/">Preferred Reporting Items for Systematic Reviews and Meta-Analyses (PRISMA)</a></p>
+<p><a href="https://journals.plos.org/plosntds/article/file?type=supplementary&amp;id=info:doi/10.1371/journal.pntd.0000381.s002">PRISMA checklist</a></p>
+<p><a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1000100">PRISMA explanation paper</a></p>
+</section>
+<section id="general-preparation-quality" class="slide level2">
+<h2>General preparation: Quality</h2>
+<p><a href="http://www.bmj.com/content/bmj/358/bmj.j4008.full.pdf">Quality of meta-analysis (AMSTAR)</a></p>
+<p><font size="4"> 1. Research questions / inclusion criteria use PICO (Pop, Intervention, Control, Outcome)<br> 2. A-priori protocol<br> 3. Explain selection of studies<br> 4. Comprehensive lit search<br> 5. De-duplication<br> 6. Data extraction in duplicate<br> 7. Justify excluded studies<br> 8. Adequate detail<br> 9. Assess RoB<br> 10. Report funding of primary studies<br> 11. Appropriate meta-analysis<br> 12. Sensitivity analysis for RoB<br> 13. Account for RoB<br> 14. Report / discuss heterogeneity<br> 15. Publication bias<br> 16. Conflict of interest </font></p>
+</section>
+<section id="systematic-reviews" class="slide level2">
+<h2>Systematic reviews</h2>
+<p>Collaborate with a <strong>librarian</strong> if you have a good one!</p>
+<p>Excellent materials by Janneke Staaks:</p>
+<ul>
+<li>Systematic Review Search Support https://osf.io/49t8x/</li>
+</ul>
+<p>Siddaway, A. P., Wood, A. M., &amp; Hedges, L. V. (2019). How to do a systematic review: a best practice guide for conducting and reporting narrative reviews, meta-analyses, and meta-syntheses. Annual review of psychology, 70, 747-770</p>
+</section>
+<section id="systematic-reviews-zotero" class="slide level2">
+<h2>Systematic reviews: Zotero</h2>
+
+<img data-src="materials/zotero.png" class="r-stretch"></section>
+<section id="systematic-reviews-deduplication" class="slide level2">
+<h2>Systematic reviews: Deduplication</h2>
+<!--iframe src="https://sr-accelerator.com/#/help/dedupe"></iframe-->
+
+<img data-src="materials/dedup.png" class="r-stretch quarto-figure-center"></section>
+<section id="systematic-reviews-screening-abstracts" class="slide level2">
+<h2>Systematic reviews: Screening abstracts</h2>
+<p><a href="https://rayyan.qcri.org/welcome">RAYYAN</a></p>
+
+<img data-src="materials/rayyan.png" class="r-stretch"></section>
+<section id="systematic-reviews-protocol" class="slide level2">
+<h2>Systematic reviews: Protocol</h2>
+<p>Need a clear protocol</p>
+<p>Pre-register your meta-analysis!</p>
+<ul>
+<li><a href="https://bmcpsychology.biomedcentral.com/articles/10.1186/s40359-016-0126-3">Daniel Lakens</a></li>
+<li><a href="http://help.osf.io/m/registrations/l/524205-register-your-project">Tutorial on OSF</a></li>
+</ul>
+</section>
+<section id="systematic-reviews-eligibility-criteria" class="slide level2">
+<h2>Systematic reviews: Eligibility criteria</h2>
+<p>You can use these to eliminate studies, OR code them as moderators</p>
+</section>
+<section id="systematic-reviews-bias-in-studies" class="slide level2">
+<h2>Systematic reviews: Bias in studies</h2>
+<p>Code methodological components as moderators</p>
+<ul>
+<li>Random assignment</li>
+<li>Blind assignment (blind everything)</li>
+<li>Dropout</li>
+<li>Power analysis/optional stopping</li>
+</ul>
+<p>Use risk of bias assessments</p>
+<ul>
+<li><a href="https://www.bmj.com/content/355/bmj.i4919">ROBINS-I</a></li>
+</ul>
+</section>
+<section id="systematic-reviews-open-science" class="slide level2">
+<h2>Systematic reviews: Open science</h2>
+<p>Share your data when finished (https://osf.io)</p>
+
+<img data-src="materials/osf.png" class="r-stretch"></section>
+<section id="metasem" class="slide level2">
+<h2>metaSEM</h2>
+<p>Sometimes, research questions are about relationships between multiple variables</p>
+<p>You can specify those as SEM/path model</p>
+<ul>
+<li>Code a (partial) correlation matrix per study</li>
+<li>Code N for correlation matrix</li>
+<li>Pool correlation matrices using <code>library(metaSEM)</code></li>
+<li>Estimate SEM-model on pooled correlation matrix</li>
+<li>Mike Cheung and Suzanne Jak</li>
+</ul>
+</section>
+<section id="metasem-book" class="slide level2">
+<h2>metaSEM: Book</h2>
+<!--iframe src="https://www.wiley.com/en-us/Meta+Analysis%3A+A+Structural+Equation+Modeling+Approach-p-9781119993438"></iframe>-->
+
+<img data-src="materials/cheung.jpg" class="r-stretch quarto-figure-center"></section>
+<section id="continuously-cumulating-meta-analysis" class="slide level2">
+<h2>Continuously cumulating meta-analysis</h2>
+<p>Full data online, new studies can be added</p>
+</section>
+<section id="continuously-cumulating-metalab" class="slide level2">
+<h2>Continuously cumulating: Metalab</h2>
+<iframe src="https://metalab.stanford.edu/app.html?id=visualization">
+</iframe>
+</section>
+<section id="automatic-systematic-reviews" class="slide level2">
+<h2>Automatic systematic reviews</h2>
+<p>Identifying relevant articles using machine learning</p>
+<ul>
+<li>https://github.com/msdslab/automated-systematic-review</li>
+<li>Only if you can program in Python</li>
+</ul>
+</section>
+<section id="this-afternoon" class="slide level2">
+<h2>This afternoon</h2>
+<p>Bring your laptop</p>
+<p>Interactive tutorial using R / Rstudio</p>
+<p>Manual online at https://cjvanlissa.github.io/Doing-Meta-Analysis-in-R/</p>
+<p>Challenge: Repeat all the exercises in the manual, but use</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(metaforest)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>df <span class="ot">&lt;-</span> fukkink_lont</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead of</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>df <span class="ot">&lt;-</span> curry</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section id="reporting-practices" class="title-slide slide level1 center">
+<h1>Reporting practices</h1>
+
+</section>
+<section id="forest-plot" class="slide level2">
+<h2>Forest plot</h2>
+<p>Graphical display of results from individual studies on a common scale</p>
+<p>Each study represented by black square and a horizontal line (CI:95%)</p>
+<p>Area of black square reflects study weight</p>
+</section>
+<section id="forest-plot-1" class="slide level2">
+<h2>Forest plot</h2>
+
+<img data-src="materials/forest_plot.png" style="width:80.0%" class="r-stretch"></section>
+<section id="confidence-intervals" class="slide level2">
+<h2>Confidence intervals</h2>
+<p>Point estimate is the best guess of the effect</p>
+<p>Confidence interval expresses our uncertainty about this guess</p>
+<p>95% CI:</p>
+<ul>
+<li>Range of values we expect to include the true effect</li>
+<li>The “probability” is in the procedure!</li>
+<li>If we repeat this procedure 100 times, 95 of CIs will contain the true effect</li>
+</ul>
+</section>
+<section id="significance" class="slide level2">
+<h2>Significance</h2>
+<p>Significance</p>
+<ul>
+<li>p-value from Z (or t-) test based on estimate and SE</li>
+<li>CI excludes zero</li>
+<li>But: Large (combined) samples, often significant</li>
+</ul>
+<p>Relevance</p>
+<ul>
+<li>What effect size is clinically important/theoretically meaningful?</li>
+</ul>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div class="footer footer-default">
+
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bornmannGrowthRatesModern2015" class="csl-entry" role="listitem">
+Bornmann, Lutz, and Rüdiger Mutz. 2015. <span>“Growth Rates of Modern Science: <span>A</span> Bibliometric Analysis Based on the Number of Publications and Cited References.”</span> <em>Journal of the Association for Information Science and Technology</em> 66 (11): 2215–22. <a href="https://doi.org/10.1002/asi.23329">https://doi.org/10.1002/asi.23329</a>.
+</div>
+<div id="ref-ioannidisMassProductionRedundant2016" class="csl-entry" role="listitem">
+Ioannidis, John P. A. 2016. <span>“The <span>Mass Production</span> of <span>Redundant</span>, <span>Misleading</span>, and <span>Conflicted Systematic Reviews</span> and <span>Meta</span>-Analyses: <span>Mass Production</span> of <span>Systematic Reviews</span> and <span>Meta</span>-Analyses.”</span> <em>The Milbank Quarterly</em> 94 (3): 485–514. <a href="https://doi.org/10.1111/1468-0009.12210">https://doi.org/10.1111/1468-0009.12210</a>.
+</div>
+</div>
+</section></section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="methodsnet_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="methodsnet_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="methodsnet_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="methodsnet_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        text: function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>
