@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.427">
 
   <meta name="author" content="Caspar J. van Lissa">
-  <meta name="dcterms.date" content="2025-02-10">
+  <meta name="dcterms.date" content="2025-03-10">
   <title>Accounting for Heterogeneity in Meta-Analysis</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -404,11 +404,6 @@
       margin-right: 0; 
     }
   </style>
-  
-  <script src="methodsnet_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="methodsnet_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-  <link href="methodsnet_files/libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet">
-  <script src="methodsnet_files/libs/bsTable-3.3.7/bootstrapTable.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -425,27 +420,27 @@ Caspar J. van Lissa
 </div>
 </div>
 
-  <p class="date">2025-02-10</p>
+  <p class="date">2025-03-10</p>
 </section>
-<section class="slide level2">
-
-<!--
-Siddaway, A. P., Wood, A. M., & Hedges, L. V. (2019). How to do a systematic review: a best practice guide for conducting and reporting narrative reviews, meta-analyses, and meta-syntheses. Annual review of psychology, 70, 747-770.-->
-<!-- Janneke Staaks - Systematic Review Search Support https://osf.io/49t8x/-->
-<!--# Meta-analysis using R
-
-Reading data,
-Running the analysis
-Forest plot
-Exporting results
--->
-<!--mistakes in the selection of a statistical model, and mistakes
-in interpreting the mean effect and its confidence interval.-->
-</section>
-<section>
-<section id="meta-analysis" class="title-slide slide level1 center">
-<h1>Meta-Analysis</h1>
-
+<section id="preparing-for-the-workshop" class="slide level2 smaller">
+<h2>Preparing for the Workshop</h2>
+<ol type="1">
+<li>Install R and then RStudio
+<ul>
+<li>Follow the instructions here: <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a></li>
+</ul></li>
+<li>Open RStudio.<br>
+Now, run the setup script for this workshop.<br>
+In the window labeled “Console”, paste this code and press [Enter]:</li>
+</ol>
+<pre><code>source("https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R")</code></pre>
+<ol start="3" type="1">
+<li>If you have your own data: after running the <code>source()</code> command above, you can use the function <code>check_data()</code>.
+<ul>
+<li>Load your own data into R as usual, and check if you can use it for the workshop exercises by running:</li>
+<li><code>check_data(your_data_object)</code></li>
+</ul></li>
+</ol>
 </section>
 <section id="today" class="slide level2">
 <h2>Today</h2>
@@ -468,8 +463,8 @@ in interpreting the mean effect and its confidence interval.-->
 <!-- Moderation approach: After the exercise blocks, the workshop chair facilitates knowledge exchange among participants so they resolve each other's sticking points. Only as a last resort does the chair step in to provide answers. -->
 <!-- Convenor's Biographies: Dr. Caspar J. Van Lissa is associate professor of social data science at Tilburg University, the Netherlands and associate editor for Research Synthesis Methods. He has developed machine learning-based evidence synthesis methods for dealing with heterogeneity in meta-analysis, combining evidence from heterogeneous studies, and qualitative research synthesis methods using text mining. He serves as board member of Tilburg Young Academy and chair of the Tilburg Open Science Community. -->
 </section>
-<section id="intro" class="slide level2 smaller">
-<h2>Intro</h2>
+<section id="conceptual-understanding" class="slide level2 smaller">
+<h2>Conceptual Understanding</h2>
 <p>I’m going climbing with two groups of friends</p>
 <p>One person from each group tells me the average level of their group (French grade)</p>
 <p>I will choose a route based on the average level of all friends</p>
@@ -485,11 +480,11 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 </section>
 <section id="definition" class="slide level2">
 <h2>Definition</h2>
-<p>Statistical procedures for synthesizing results of previous research to arrive at conclusions about the body of research.</p>
+<p>Quantitative systematic procedures for synthesizing results of previous research to arrive at conclusions about the body of research.</p>
 <ul>
-<li>Quantitative: numbers</li>
+<li>Quantitative: numerical output</li>
 <li>Systematic: methodical</li>
-<li>Combining: putting together</li>
+<li>Synthesizing: putting together</li>
 <li>Previous research: whats already done</li>
 <li>Conclusions: new knowledge</li>
 </ul>
@@ -514,83 +509,36 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 <ul>
 <li>Cases: Individual participants</li>
 </ul>
-</section>
-<section id="history-pearson" class="slide level2">
-<h2>History: Pearson</h2>
-<p>Karl Pearson (1904)</p>
-<ul>
-<li>Studies on efficacy of typhoid vaccination</li>
-<li><em>“Many of the groups… are far too small to allow of any definite opinion being formed at all, having regard to the size of the probable error involved.”</em></li>
-</ul>
-</section>
-<section id="history" class="slide level2">
-<h2>History</h2>
-<p>Shift from narrative reviews to systematic reviews:</p>
-<ul>
-<li>1950: Eysenk concludes psychotherapy does not work
-<ul>
-<li>No consensus: 25 years of evaluation research, hundreds of studies</li>
-</ul></li>
-<li>1978: Gene V. Glass aggregates findings of 375 intervention studies
-<ul>
-<li>Introduces term “meta-analysis”</li>
-<li>“On the average, the typical therapy client is better off than 75% of untreated individuals”</li>
-</ul></li>
-<li>Early 1990s: Rise of meta-analysis</li>
-<li>Now: Gold standard of evidence</li>
-</ul>
-</section>
-<section id="distinct-from-lit-review" class="slide level2">
-<h2>Distinct from lit review</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-striped table-hover" data-quarto-postprocess="true" style="margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Traditional Review</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Systematic Review</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Meta-analysis</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Author</td>
-<td style="text-align: left;">Individual</td>
-<td style="text-align: left;">Team</td>
-<td style="text-align: left;">Team</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Search</td>
-<td style="text-align: left;">Unguided/motivated</td>
-<td style="text-align: left;">Protocol</td>
-<td style="text-align: left;">Protocol</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Conclusion</td>
-<td style="text-align: left;">Author's judgment</td>
-<td style="text-align: left;">Qualitative</td>
-<td style="text-align: left;">Statistical</td>
-</tr>
-</tbody>
-</table>
+<!-- ## History: Pearson -->
+<!-- Karl Pearson (1904) -->
+<!-- * Studies on efficacy of typhoid vaccination -->
+<!-- * *"Many of the groups… are far too small to allow of any definite opinion being formed at all, having regard to the size of the probable error involved."* -->
+<!-- ## History -->
+<!-- Shift from narrative reviews to systematic reviews: -->
+<!-- * 1950: Eysenk concludes psychotherapy does not work -->
+<!--     + No consensus: 25 years of evaluation research, hundreds of studies -->
+<!-- * 1978: Gene V. Glass aggregates findings of 375 intervention studies -->
+<!--     + Introduces term "meta-analysis" -->
+<!--     + "On the average, the typical therapy client is better off than 75% of untreated individuals" -->
+<!-- * Early 1990s: Rise of meta-analysis -->
+<!-- * Now: Gold standard of evidence -->
+<!-- ## Distinct from lit review -->
 
-
-</div>
-</div>
+<!-- ```{r tablelitrev} -->
+<!-- tab <- data.frame("Traditional Review" = c("Individual", "Unguided/motivated", "Author's judgment"), -->
+<!--                   "Systematic Review" = c("Team", "Protocol", "Qualitative"), -->
+<!--                   "Meta-analysis" = c("Team", "Protocol", "Statistical"), -->
+<!--                   row.names = c("Author", "Search", "Conclusion"), -->
+<!--                   check.names = FALSE) -->
+<!-- kable(tab) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) -->
+<!-- ``` -->
 </section>
 <section id="popularity" class="slide level2">
 <h2>Popularity</h2>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="./materials/popularity.png" style="height:100.0%"></p>
-</div>
-</div>
-</section>
-<section id="popularity-1" class="slide level2">
-<h2>Popularity</h2>
-<p>Popularity of this method has grown tremendously <span class="citation" data-cites="ioannidisMassProductionRedundant2016">(<a href="#/references" role="doc-biblioref" onclick="">Ioannidis 2016</a>)</span></p>
-<p>Why?</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p>Popularity grows exponentially <span class="citation" data-cites="ioannidisMassProductionRedundant2016">(<a href="#/references" role="doc-biblioref" onclick="">Ioannidis 2016</a>)</span></p>
 <ol type="1">
 <li>Output of primary research keeps increasing <span class="citation" data-cites="bornmannGrowthRatesModern2015">(<a href="#/references" role="doc-biblioref" onclick="">Bornmann and Mutz 2015</a>)</span></li>
 <li>“Replication crisis” increased demand for reliable findings</li>
@@ -600,18 +548,26 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 <li>Highly cited and respected</li>
 </ul></li>
 </ol>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="./materials/popularity.png" style="height:100.0%"></p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="goals-of-meta-analysis" class="slide level2">
 <h2>Goals of meta-analysis</h2>
 <ol type="1">
 <li>Summarize effect</li>
 <li>Increase statistical power and precision</li>
-<li>Develop, refine and test hypothesis</li>
-<li>Reduce the subjectivity of study comparisons by using systematic and explicit comparison procedure</li>
-<li>Identify gap in knowledge base and directions for future research</li>
+<li>Test hypotheses</li>
+<li>Objectively synthesize literature</li>
+<li>Identify knowledge gaps and future directions</li>
 <li>Power analysis for future studies</li>
-<li><em>Identify heterogeneity</em></li>
-<li><em>Account for heterogeneity</em></li>
+<li><strong>Identify effect heterogeneity</strong></li>
+<li><strong>Explain effect heterogeneity</strong></li>
 </ol>
 </section>
 <section id="steps-in-meta-analysis" class="slide level2">
@@ -629,15 +585,17 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 <li>Sensitivity analyses</li>
 </ol>
 <!--to assess the impact of excluding or down-weighting unpublished studies, studies of lower quality, out-of-date studies, etc.-->
-</section></section>
+</section>
 <section>
 <section id="effect-sizes" class="title-slide slide level1 center">
 <h1>Effect sizes</h1>
 
 </section>
-<section id="what-effect-sizes" class="slide level2 smaler">
+<section id="what-effect-sizes" class="slide level2 smaller">
 <h2>What effect sizes?</h2>
-<p>The effect size is the unit of analysis in a meta-analysis.</p>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>Which Effect Sizes?</strong></p>
 <ul>
 <li>“Descriptive” statistics (mean, SD, p, Cronbach’s alpha)</li>
 <li>Differences between groups
@@ -653,9 +611,8 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 </ul></li>
 <li>Etc.: any statistic with standard error</li>
 </ul>
-</section>
-<section id="effect-sizes-what-do-you-need" class="slide level2">
-<h2>Effect sizes: What do you need?</h2>
+</div><div class="column" style="width:40%;">
+<p><strong>What do you need?</strong></p>
 <ul>
 <li>Study must report the required effect size…</li>
 <li>…or sufficient statistics to compute it</li>
@@ -666,6 +623,8 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 <li><a href="https://campbellcollaboration.org/media/k2/attachments/converting_between_effect_sizes.pdf">Campbell collaboration PDF</a></li>
 <li><a href="https://osf.io/vbdah/">Daniel Lakens’ spreadsheet</a></li>
 </ul>
+</div>
+</div>
 </section>
 <section id="effect-sizes-pitfals" class="slide level2">
 <h2>Effect sizes: Pitfals</h2>
@@ -675,8 +634,8 @@ X_2:&amp; [4, 8] &amp;M_2 &amp;= 6 \\
 </ul>
 </section></section>
 <section>
-<section id="averaging-studies" class="title-slide slide level1 center">
-<h1>Averaging studies</h1>
+<section id="models-for-meta-analysis" class="title-slide slide level1 center">
+<h1>Models for Meta-Analysis</h1>
 
 </section>
 <section id="how-to-combine" class="slide level2">
@@ -744,11 +703,11 @@ W_i = \frac{1}{v_i} = \frac{1}{SE^2_i}
 <p><strong>Familiarize yourself with the formula for the SE of your effect size BEFORE you collect data!</strong></p>
 </section></section>
 <section>
-<section id="calculating-weighted-average" class="title-slide slide level1 center">
-<h1>Calculating weighted average</h1>
+<section id="fixed-effect-model" class="title-slide slide level1 center">
+<h1>Fixed effect Model</h1>
 
 </section>
-<section id="fixed-effect-model" class="slide level2">
+<section id="fixed-effect-model-1" class="slide level2">
 <h2>Fixed effect model</h2>
 <p>Assumption: true effect is the same in each study (fixed) (Hedges, 1998)</p>
 <p>Differences between studies due to random (sampling) error</p>
@@ -795,28 +754,7 @@ y_i &amp;= \theta + \epsilon_i &amp;\text{where } \epsilon_i \sim N(0, \sigma^2_
 <li>Outcomes: type, scale, cut-off points, duration of follow-up, etc.</li>
 <li>Quality and methodology: randomised or not, allocation concealment, blinding, etc.</li>
 </ul>
-<p>Meta-analysis is <strong>not</strong> immune to small sample problems (small N, many moderators p)</p>
-</section>
-<section id="how-to-deal-with-heterogeneity" class="slide level2">
-<h2>How to deal with heterogeneity</h2>
-<ol type="1">
-<li>Do not pool at all (apples / oranges)</li>
-<li>Ignore heterogeneity: fixed effect model</li>
-<li>Allow for random heterogeneity: random effects model</li>
-<li>Explain heterogeneity
-<ul>
-<li>Meta-regression</li>
-</ul></li>
-<li><em>Explore heterogeneity</em>
-<ul>
-<li>Regularized meta-regression</li>
-<li>Random Forest meta-regression</li>
-</ul></li>
-<li><em>Aggregate evidence, not estimates</em>
-<ul>
-<li>Product Bayes Factor</li>
-</ul></li>
-</ol>
+<!-- Meta-analysis is **not** immune to small sample problems (small N, many moderators p) -->
 </section>
 <section id="random-effects-model" class="slide level2">
 <h2>Random effects model</h2>
@@ -832,7 +770,7 @@ y_i &amp;= \theta + \epsilon_i &amp;\text{where } \epsilon_i \sim N(0, \sigma^2_
 </ul>
 <p>Assumption holds:</p>
 <ul>
-<li>When there are no systematic differences between studies</li>
+<li>When there are random uncorrelated, but no systematic, differences between studies</li>
 </ul>
 </section>
 <section id="random-effects-formulas" class="slide level2">
@@ -873,7 +811,7 @@ y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \s
 </ul>
 <p><span class="math inline">\(Q = \sum_{i=1}^{k}W_i*(y_i-\hat{\theta})^2\)</span></p>
 </section>
-<section id="heterogeneity-statistics-i2" class="slide level2">
+<section id="heterogeneity-statistics-i2" class="slide level2 smaller">
 <h2>Heterogeneity statistics: I2</h2>
 <p><span class="math inline">\(I^2\)</span> describes the percentage of variation across studies that is due to heterogeneity rather than chance (Higgins and Thompson, 2002; Higgins et al., 2003).</p>
 <ul>
@@ -942,8 +880,8 @@ y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \s
 <p>Really the same as normal regression analysis, but with an extra “error” term for the heterogeneity:</p>
 <p><span class="math display">\[y_i = \beta_0 + \beta_1X_{1i} + \dots + \beta_pX_{pi} + \epsilon_i\]</span></p>
 </section>
-<section id="moderators-dummies-in-meta-regression" class="slide level2">
-<h2>Moderators: Dummies in meta-regression</h2>
+<section id="dummies-in-meta-regression" class="slide level2 smaller">
+<h2>Dummies in meta-regression</h2>
 <p>The effect of a grouping-variable can be expressed two ways.</p>
 <p>By estimating both group means, using two dummies and no intercept:</p>
 <p><span class="math display">\[\theta_i = \hat{\gamma}_1D_{1i} + \hat{\gamma}_2D_{2i} + \zeta_i + \epsilon_i\]</span></p>
@@ -952,62 +890,49 @@ y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \s
 <p>Mathematically, they are identical. We can call the first one “ANOVA specification”, and the second one “regression specification”</p>
 </section></section>
 <section>
-<section id="second-presentation" class="title-slide slide level1 center">
-<h1>Second Presentation</h1>
+<section id="second-part-of-the-day" class="title-slide slide level1 center">
+<h1>Second part of the day</h1>
 
 </section>
-<section id="moderators-remaining-issues" class="slide level2">
-<h2>Moderators: Remaining issues</h2>
-<ul>
-<li>Often small sample, many predictors (n &lt; p)</li>
-<li>Power issues</li>
-<li>Interactions? Non-linear effects?</li>
-<li>Lack of theory to identify moderators
-<ul>
-<li>Moderator analysis is often exploratory</li>
-</ul></li>
-</ul>
-</section></section>
-<section>
-<section id="machine-learning-informed-moderator-selection" class="title-slide slide level1 center">
-<h1>Machine Learning-Informed Moderator Selection</h1>
-<p>Regularized meta-regression Random forest meta-regression</p>
-</section>
-<section id="the-challenge" class="slide level2">
-<h2>The challenge</h2>
-<p>When meta-analyzing existing bodies of literature, there are many between-studies differences</p>
-<p>Differences in samples, designs, measurements, and methods</p>
-<p>The number of potential moderators is large relative to the number of studies (n&lt;p)</p>
-</section>
-<section id="accounting-for-heterogeneity" class="slide level2 smaller">
-<h2>Accounting for Heterogeneity</h2>
+<section id="how-to-deal-with-heterogeneity" class="slide level2">
+<h2>How to deal with heterogeneity</h2>
 <ol type="1">
-<li>Studies are (close) replications
+<li>Studies are incomparable:
 <ul>
-<li>One true population effect size</li>
-<li>Fixed effect model</li>
+<li>Do not pool at all (apples / oranges)</li>
+<li><strong>NEW: aggregate evidence using <em>Product Bayes Factor</em></strong></li>
 </ul></li>
-<li>Similar studies, but not identical
+<li>(Close) replications: fixed effect model</li>
+<li>Conceptual replications with minor differences: random effects model</li>
+<li>Known systematic differences: Explain heterogeneity
 <ul>
-<li>Differences due to many uncorrelated factors</li>
-<li>A (normal) distribution of population effect sizes with mean and variance</li>
-<li>Random effects model</li>
+<li>Meta-regression</li>
 </ul></li>
-<li>Known systematic differences between studies
+<li>Unknown systematic differences: <em>Explore heterogeneity</em>
 <ul>
-<li>Use as exclusion criteria</li>
-<li>Code as moderating variables</li>
-<li>Meta-regression (Higgins et al., 2009)</li>
-</ul></li>
-<li>Suspected differences between studies
-<ul>
-<li>Exploratory moderator analysis</li>
+<li><strong>Regularized meta-regression</strong></li>
+<li><strong>Random Forest meta-regression (MetaForest)</strong></li>
 </ul></li>
 </ol>
 </section>
+<section id="exploring-heterogeneity" class="slide level2">
+<h2>Exploring Heterogeneity</h2>
+</section>
+<section id="the-challenge" class="slide level2 smaller">
+<h2>The challenge</h2>
+<p>In heterogeneous bodies of literature, there are many between-studies differences</p>
+<p>Differences in samples, designs, measurements, and methods</p>
+<p>Small sample, many predictors (n &lt; p)</p>
+<ul>
+<li>Power issues</li>
+<li>Interactions? Non-linear effects?</li>
+<li>Lack of theory to identify moderators</li>
+<li>Existing methods not suitable for exploratory moderator analysis</li>
+</ul>
+</section>
 <section id="curse-of-dimensionality" class="slide level2">
 <h2>Curse of Dimensionality</h2>
-<p>https://cjvanlissa.shinyapps.io/Polynomials/</p>
+<iframe width="1000" height="700" src="https://cjvanlissa.shinyapps.io/Polynomials/" title="Polynomials"></iframe>
 </section>
 <section id="which-moderators-matter" class="slide level2">
 <h2>Which Moderators Matter?</h2>
@@ -1021,8 +946,8 @@ y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \s
 </ul></li>
 </ul>
 </section>
-<section id="statistical-solutions" class="slide level2">
-<h2>Statistical solutions</h2>
+<section id="use-statistics" class="slide level2">
+<h2>Use Statistics</h2>
 <ul>
 <li>(Bivariate) null-hypothesis significance tests
 <ul>
@@ -1042,6 +967,11 @@ y_i &amp;= \theta_i + \epsilon_i &amp;\text{where } \epsilon_i &amp;\sim N(0, \s
 <li>Focal issue in machine learning (Hastie, Tibshirani, &amp; Friedman, 2009)</li>
 </ul></li>
 </ul>
+</section></section>
+<section>
+<section id="machine-learning-moderator-selection" class="title-slide slide level1 center">
+<h1>Machine Learning Moderator Selection</h1>
+<p>Regularized meta-regression Random forest meta-regression</p>
 </section>
 <section id="regularized-meta-regression" class="slide level2">
 <h2>Regularized meta-regression</h2>
@@ -1083,11 +1013,24 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <li>Can be estimated in existing software (STAN)</li>
 </ul>
 </section>
+<section id="priors" class="slide level2">
+<h2>Priors</h2>
+<div class="quarto-layout-panel">
+<div class="quarto-layout-row quarto-layout-valign-top">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="./materials/lasso.png"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<p><img data-src="./materials/hs.png"></p>
+</div>
+</div>
+</div>
+</section>
 <section id="introducing-brma" class="slide level2">
 <h2>Introducing <code>brma</code></h2>
 <p>R-package pema (penalized meta-analysis) implements BRMA with back-end in STAN</p>
 <ul>
-<li>Compiled code makes this package very fast and easy to install</li>
+<li>Compiled code: very fast and easy to install</li>
 <li>Compatible with rstan and related packages</li>
 <li>All plots and summary functions are available</li>
 <li>Validated using simulation study (Van Lissa, Van Erp, &amp; Clapper, 2023)</li>
@@ -1111,7 +1054,40 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 </ul></li>
 <li>Residual heterogeneity: no additional bias</li>
 </ul>
-<p>Conclusions</p>
+</section>
+<section id="output" class="slide level2 smaller">
+<h2>Output</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>fit_lasso <span class="ot">&lt;-</span> <span class="fu">brma</span>(yi <span class="sc">~</span> ., <span class="at">data =</span> bonapersona)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>BRMA mixed-effects model (k = 734), method: NUTS sampling
+tau^2 (n = 734): 0.44 (SE = 0.00)
+
+              mean se_mean    sd   2.5%    25%    50%    75% 97.5%   n_eff Rhat
+Intercept   -38.00    0.43 15.55 -67.91 -48.44 -38.31 -27.46 -6.70 1323.09 1.00
+mTimeLength  -0.01    0.00  0.01  -0.02  -0.01  -0.01  -0.00  0.00 1084.11 1.00
+year          0.02    0.00  0.01   0.00   0.01   0.02   0.02  0.03 1323.35 1.00
+ageWeek      -0.01    0.00  0.01  -0.02  -0.01  -0.01  -0.00  0.00  956.49 1.01
+speciesrat    0.19    0.00  0.07   0.05   0.14   0.19   0.24  0.32 1034.83 1.00
+sexM          0.14    0.00  0.07   0.00   0.09   0.15   0.19  0.29 1014.89 1.01
+tau2          0.44    0.00  0.04   0.37   0.41   0.44   0.47  0.52 1134.70 1.00
+             
+Intercept   *
+mTimeLength  
+year        *
+ageWeek      
+speciesrat  *
+sexM        *
+tau2        *
+
+*: This coefficient is significant, as the 95% credible interval excludes zero. n_eff is the effective sample size, Rhat is the potential scale reduction for multiple chains (Rhat = 1 indicates convergence).</code></pre>
+</div>
+</div>
+</section>
+<section id="summary-brma" class="slide level2">
+<h2>Summary: brma</h2>
 <ul>
 <li>Helps eliminate irrelevant moderators / prevent overfitting</li>
 <li>Suitable small sample solution</li>
@@ -1120,9 +1096,20 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <li>Readily available in user friendly software</li>
 </ul>
 </section>
-<section id="tree-based-methods" class="slide level2">
-<h2>Tree-based methods</h2>
-<pre><code>Tree algorithm
+<section id="example-studies" class="slide level2 smaller">
+<h2>Example Studies</h2>
+<p><strong>Method reference: <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/jrsm.1628">Van Lissa, van Erp, &amp; Clapper (2023). Selecting relevant moderators with Bayesian regularized meta‐regression. Research Synthesis Methods, 14(2), 301-322.</a></strong></p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S0924977X23000676">Kwee et al.&nbsp;(2023). Anxiolytic effects of endocannabinoid enhancing compounds: A systematic review and meta-analysis. European Neuropsychopharmacology, 72, 79-94.</a></p>
+<p><a href="https://link.springer.com/article/10.1007/s00213-023-06333-7">Heesbeen et al.&nbsp;(2023). The effect of SSRIs on fear learning: a systematic review and meta-analysis. Psychopharmacology, 240(11), 2335-2359.</a></p>
+</section></section>
+<section>
+<section id="tree-based-methods" class="title-slide slide level1 center">
+<h1>Tree-based Methods</h1>
+
+</section>
+<section id="metaforest" class="slide level2">
+<h2>MetaForest</h2>
+<pre><code>Single Tree algorithm
 
 1. Split the data on the moderator/value that leads to the most  
    homogenous post-split groups on the dependent variable
@@ -1192,7 +1179,7 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <li>Forests average predictions of many trees, leading to smooth prediction curves</li>
 </ul>
 </section>
-<section id="metaforest" class="slide level2">
+<section id="metaforest-1" class="slide level2">
 <h2>MetaForest</h2>
 <p>Apply meta-analytic weights to random forests (in bootstrapping step)</p>
 <p>More precise studies are more influential in building the model</p>
@@ -1249,6 +1236,132 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <li>(Optional:) Test linear model of relevant moderators</li>
 <li>Classic meta-analysis for summary effect</li>
 </ol>
+</section>
+<section id="example-studies-1" class="slide level2 smaller">
+<h2>Example Studies</h2>
+<p><strong>Method reference: Van Lissa, 2020. Small sample meta-analyses: Exploring heterogeneity using MetaForest. In Small sample size solutions (pp.&nbsp;186-202). Routledge.</strong></p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S0022103117303451">Curry et al., 2018. Happy to help? A systematic review and meta-analysis of the effects of performing acts of kindness on the well-being of the actor. Journal of Experimental Social Psychology, 76, 320-329.</a></p>
+<p><a href="https://www.nature.com/articles/s41558-019-0545-2">Terrer et al., 2019. Nitrogen and phosphorus constrain the CO2 fertilization of global plant biomass. Nature Climate Change, 9(9), 684-689.</a></p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S0013935119304037">Roberts et al., 2019. The effect of short-term exposure to the natural environment on depressive mood: A systematic review and meta-analysis. Environmental research, 177, 108606.</a></p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S014976341930168X">Bonapersona et al., 2019. The behavioral phenotype of early life adversity: A 3-level meta-analysis of rodent studies. Neuroscience &amp; Biobehavioral Reviews, 102, 299-307.</a></p>
+</section></section>
+<section>
+<section id="aggregating-evidence" class="title-slide slide level1 center">
+<h1>Aggregating Evidence</h1>
+
+</section>
+<section id="the-problem" class="slide level2">
+<h2>The Problem</h2>
+<p>Incomparable studies (apples and oranges)</p>
+<ul>
+<li>Colinear moderators</li>
+<li>Incomparable effect sizes (e.g., bivariate AND partial regression coefficients)</li>
+<li>Theoretically incomparable (e.g., human VS rat, mouse, and cricket models of anxiety)</li>
+</ul>
+</section>
+<section id="solution-product-bayes-factor" class="slide level2">
+<h2>Solution: Product Bayes Factor</h2>
+<ul>
+<li>PBF aggregates evidence for hypotheses across heterogeneous replication studies.</li>
+<li>Validated via simulation study varying sample size, number of replications, and reliability.</li>
+<li>PBF shows greater sensitivity than random-effects meta-analysis (RMA) but lower specificity.</li>
+<li>Useful when heterogeneity assumptions fail</li>
+</ul>
+</section>
+<section id="meta-analysis-vs.-bayesian-evidence-synthesis" class="slide level2">
+<h2>Meta-Analysis vs.&nbsp;Bayesian Evidence Synthesis</h2>
+<ul>
+<li><strong>Meta-analysis</strong>: Estimates a population effect size/heterogeneity</li>
+<li><strong>BES (PBF)</strong>: Synthesizes evidence for one informative hypothesis across heterogeneous studies</li>
+</ul>
+</section>
+<section id="informative-hypotheses" class="slide level2">
+<h2>Informative Hypotheses</h2>
+<ul>
+<li>Explicit hypothesis about theoretically-expected relationships</li>
+<li>About parameters of interest (e.g., <span class="math inline">\(\beta\)</span>), using (in)equality constraints (<code>=, &lt;, &gt;</code>)</li>
+<li>Null hypothesis <span class="math inline">\(H_0\)</span> is a special case: <span class="math inline">\(H_0: \beta = 0\)</span>.</li>
+<li>Example: treatment effect exceeds Smallest-Effect-Of-Interest (SESOI), <span class="math inline">\(H_i: \beta &gt; 0.1\)</span>.</li>
+<li>Dose-response effect: <span class="math inline">\(H_i: (\beta_1 &lt; \beta_2 &lt; \beta_3) &gt; 0.1\)</span>.</li>
+</ul>
+</section>
+<section id="bayesian-informative-hypothesis-tests" class="slide level2">
+<h2>Bayesian Informative Hypothesis Tests</h2>
+<ul>
+<li>Evidence for <span class="math inline">\(H_i\)</span> relative to another hypothesis expressed as Bayes factor (BF).</li>
+<li>Complementary hypothesis <span class="math inline">\(H_{!i}\)</span>: “not <span class="math inline">\(H_i\)</span>”.</li>
+<li>BF values: <span class="math inline">\(BF_{ic} = 10\)</span> (10x more support for <span class="math inline">\(H_i\)</span> vs <span class="math inline">\(H_c\)</span>), <span class="math inline">\(BF_{ic} = 0.1\)</span> (10x less support).</li>
+<li>BF differs from significance test:
+<ul>
+<li>Continuous measure of evidence, not binary decision</li>
+<li>Robust to multiple- and sequential-testing.</li>
+</ul></li>
+<li>Decision criteria: <span class="math inline">\(BF &gt; 3\)</span> or <span class="math inline">\(BF &gt; 10\)</span> can be considered conclusive evidence.</li>
+</ul>
+</section>
+<section id="how-are-bayes-factors-calculated" class="slide level2">
+<h2>How are Bayes Factors Calculated?</h2>
+<ul>
+<li><strong>Approximated adjusted fractional Bayes factor (AAFBF)</strong>:
+<ul>
+<li>Integrates posterior and prior distributions based on parameter constraints</li>
+<li>Uses Monte Carlo integration to approximate</li>
+<li>Results vary slightly, random seed ensures reproducibility</li>
+</ul></li>
+<li><strong>Prior sensitivity</strong>:
+<ul>
+<li>AAFBF uses minimally informative priors.</li>
+<li>Inequality constraints are not prior-sensitive, but equality constraints are</li>
+</ul></li>
+</ul>
+</section>
+<section id="the-product-bayes-factor-pbf" class="slide level2">
+<h2>The Product Bayes Factor (PBF)</h2>
+<ul>
+<li>Combines Bayes factors from individual studies by multiplying them</li>
+<li>Assumes all studies test the same theoretical relationship
+<ul>
+<li>But not that the effect sizes are all comparable</li>
+</ul></li>
+</ul>
+</section>
+<section id="simulation-study" class="slide level2">
+<h2>Simulation Study</h2>
+<ul>
+<li>PBF had higher overall accuracy (greater sensitivity, lower specificity) than RMA and IPD meta-analysis.</li>
+<li>Researchers should consider the trade-offs between sensitivity and specificity when selecting synthesis methods.</li>
+<li>PBF is ideal for small samples of heterogeneous studies
+<ul>
+<li>Offers a quantitative conclusion where other methods fail</li>
+</ul></li>
+</ul>
+</section>
+<section id="output-1" class="slide level2">
+<h2>Output</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(bain)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>res <span class="ot">&lt;-</span> <span class="fu">pbf</span>(<span class="at">yi =</span> kuiper2013<span class="sc">$</span>beta,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>           <span class="at">vi =</span> kuiper2013<span class="sc">$</span>vi,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>           <span class="at">ni =</span> kuiper2013<span class="sc">$</span>n,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>           <span class="at">hypothesis =</span> <span class="st">"y = 0; y &gt; 0; y &lt; 0"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            PBF Sample.1 Sample.2 Sample.3 Sample.4
+H1: y=0 1.3e-49  2.5e-01  6.5e-01  5.2e-29  1.5e-20
+H2: y&gt;0 1.1e+32  1.0e+03  2.1e+02  2.3e+13  2.3e+13
+H3: y&lt;0 2.9e-60  9.6e-04  4.8e-03  5.0e-32  1.3e-23</code></pre>
+</div>
+</div>
+</section>
+<section id="example-studies-2" class="slide level2 smaller">
+<h2>Example Studies</h2>
+<p><strong>Methodological References:</strong></p>
+<p><a href="https://osf.io/preprints/psyarxiv/nvqpw/download">Van Lissa, Kuiper, &amp; Clapper (in print). Aggregating evidence from conceptual replication studies using the product Bayes factor. Research Synthesis Methods</a></p>
+<p><a href="https://www.tandfonline.com/doi/pdf/10.1080/10705511.2020.1745644">Van Lissa et al.&nbsp;(2021). Teacher’s corner: Evaluating informative hypotheses using the Bayes factor in structural equation models. Structural Equation Modeling: A Multidisciplinary Journal, 28(2), 292-301.</a></p>
+<p><strong>Example paper:</strong></p>
+<p><a href="https://osf.io/preprints/psyarxiv/wm6rk/download">Van Leeuwen et al.&nbsp;(2024). Morality as Cooperation, Politics as Conflict. Social Psychological Bulletin, 19, 1-22.</a></p>
 </section></section>
 <section>
 <section id="publication-bias" class="title-slide slide level1 center">
@@ -1280,25 +1393,25 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <section id="publication-bias-funnel-plot" class="slide level2">
 <h2>Publication bias: Funnel plot</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Load the Happy to Help? Data</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">data</span>(curry)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># Random effects meta-analysis</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>model <span class="ot">&lt;-</span> <span class="fu">rma</span>(d, vi, <span class="at">data =</span> curry)</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co"># Funnel plot</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">funnel</span>(model, </span>
-<span id="cb3-7"><a href="#cb3-7"></a>       <span class="at">back =</span> <span class="st">"white"</span>, </span>
-<span id="cb3-8"><a href="#cb3-8"></a>       <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">99</span>),</span>
-<span id="cb3-9"><a href="#cb3-9"></a>       <span class="at">shade =</span> <span class="fu">c</span>(<span class="st">"white"</span>, <span class="st">"gray"</span>, <span class="st">"darkgray"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Load the Happy to Help? Data</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">data</span>(curry)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co"># Random effects meta-analysis</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>model <span class="ot">&lt;-</span> <span class="fu">rma</span>(d, vi, <span class="at">data =</span> curry)</span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co"># Funnel plot</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">funnel</span>(model, </span>
+<span id="cb8-7"><a href="#cb8-7"></a>       <span class="at">back =</span> <span class="st">"white"</span>, </span>
+<span id="cb8-8"><a href="#cb8-8"></a>       <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">90</span>, <span class="dv">95</span>, <span class="dv">99</span>),</span>
+<span id="cb8-9"><a href="#cb8-9"></a>       <span class="at">shade =</span> <span class="fu">c</span>(<span class="st">"white"</span>, <span class="st">"gray"</span>, <span class="st">"darkgray"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="publication-bias-funnel-plot-1" class="slide level2">
 <h2>Publication bias: Funnel plot</h2>
 
-<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="publication-bias-funnel-with-bias" class="slide level2">
 <h2>Publication bias: Funnel with bias</h2>
 
-<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="publication-bias-detecting-it-1" class="slide level2">
 <h2>Publication bias: Detecting it</h2>
 <p>Egger test: Formal test of funnel asymmetry</p>
@@ -1314,7 +1427,7 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <section id="publication-bias-trim-and-fill" class="slide level2">
 <h2>Publication bias: Trim and fill</h2>
 
-<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+<img data-src="methodsnet_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"></section>
 <section id="publication-bias-file-drawer" class="slide level2">
 <h2>Publication bias: File drawer</h2>
 <p>File drawer analysis (Rosenthal, 1979):</p>
@@ -1624,12 +1737,12 @@ PRSS = RSS + \lambda \sum_{j = 1}^p{|\beta_j|}
 <p>Manual online at https://cjvanlissa.github.io/Doing-Meta-Analysis-in-R/</p>
 <p>Challenge: Repeat all the exercises in the manual, but use</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(metaforest)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>df <span class="ot">&lt;-</span> fukkink_lont</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(metaforest)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>df <span class="ot">&lt;-</span> fukkink_lont</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Instead of</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>df <span class="ot">&lt;-</span> curry</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>df <span class="ot">&lt;-</span> curry</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section>

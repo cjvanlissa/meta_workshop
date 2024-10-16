@@ -14,27 +14,23 @@ library(metaforest)
 options("kableExtra.html.bsTable" = T)
 ```
 
-<!--
-Siddaway, A. P., Wood, A. M., & Hedges, L. V. (2019). How to do a systematic review: a best practice guide for conducting and reporting narrative reviews, meta-analyses, and meta-syntheses. Annual review of psychology, 70, 747-770.-->
 
-<!-- Janneke Staaks - Systematic Review Search Support https://osf.io/49t8x/-->
+## Preparing for the Workshop {.smaller}
 
+1. Install R and then RStudio
+    + Follow the instructions here: <https://posit.co/download/rstudio-desktop/>
+2. Open RStudio.  
+    Now, run the setup script for this workshop.  
+    In the window labeled "Console", paste this code and press [Enter]: 
 
+```
+source("https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R")
+```
 
-<!--# Meta-analysis using R
-
-Reading data,
-Running the analysis
-Forest plot
-Exporting results
--->
-
-
-<!--mistakes in the selection of a statistical model, and mistakes
-in interpreting the mean effect and its confidence interval.-->
-
-# Meta-Analysis
-
+3. If you have your own data: after running the `source()` command above, you can use the function `check_data()`.
+    + Load your own data into R as usual, and check if you can use it for the workshop exercises by running:
+    + `check_data(your_data_object)`
+    
 ## Today
 
 * Use your own data for worked examples
@@ -56,7 +52,7 @@ in interpreting the mean effect and its confidence interval.-->
 
 
 
-## Intro {.smaller}
+## Conceptual Understanding {.smaller}
 
 I'm going climbing with two groups of friends
 
@@ -80,11 +76,11 @@ Meta-analysis similarly calculates a weighted mean of the effect sizes.
 
 ## Definition
 
-Statistical procedures for synthesizing results of previous research to arrive at conclusions about the body of research.
+Quantitative systematic procedures for synthesizing results of previous research to arrive at conclusions about the body of research.
 
-* Quantitative: numbers
+* Quantitative: numerical output
 * Systematic: methodical
-* Combining: putting together
+* Synthesizing: putting together
 * Previous research: whats already done
 * Conclusions: new knowledge
 
@@ -112,69 +108,78 @@ In meta-analysis:
 * Cases: Individual participants
 
 
-## History: Pearson
+<!-- ## History: Pearson -->
 
-Karl Pearson (1904)
+<!-- Karl Pearson (1904) -->
 
-* Studies on efficacy of typhoid vaccination
-* *"Many of the groups… are far too small to allow of any definite opinion being formed at all, having regard to the size of the probable error involved."*
+<!-- * Studies on efficacy of typhoid vaccination -->
+<!-- * *"Many of the groups… are far too small to allow of any definite opinion being formed at all, having regard to the size of the probable error involved."* -->
 
-## History
+<!-- ## History -->
 
-Shift from narrative reviews to systematic reviews:
+<!-- Shift from narrative reviews to systematic reviews: -->
 
-* 1950: Eysenk concludes psychotherapy does not work
-    + No consensus: 25 years of evaluation research, hundreds of studies
-* 1978: Gene V. Glass aggregates findings of 375 intervention studies
-    + Introduces term "meta-analysis"
-    + "On the average, the typical therapy client is better off than 75% of untreated individuals"
-* Early 1990s: Rise of meta-analysis
-* Now: Gold standard of evidence
+<!-- * 1950: Eysenk concludes psychotherapy does not work -->
+<!--     + No consensus: 25 years of evaluation research, hundreds of studies -->
+<!-- * 1978: Gene V. Glass aggregates findings of 375 intervention studies -->
+<!--     + Introduces term "meta-analysis" -->
+<!--     + "On the average, the typical therapy client is better off than 75% of untreated individuals" -->
+<!-- * Early 1990s: Rise of meta-analysis -->
+<!-- * Now: Gold standard of evidence -->
 
 
-## Distinct from lit review
+<!-- ## Distinct from lit review -->
 
-```{r tablelitrev}
-tab <- data.frame("Traditional Review" = c("Individual", "Unguided/motivated", "Author's judgment"),
-                  "Systematic Review" = c("Team", "Protocol", "Qualitative"),
-                  "Meta-analysis" = c("Team", "Protocol", "Statistical"),
-                  row.names = c("Author", "Search", "Conclusion"),
-                  check.names = FALSE)
-kable(tab) %>%
-  kable_styling(bootstrap_options = c("striped", "hover"))
-```
+<!-- ```{r tablelitrev} -->
+<!-- tab <- data.frame("Traditional Review" = c("Individual", "Unguided/motivated", "Author's judgment"), -->
+<!--                   "Systematic Review" = c("Team", "Protocol", "Qualitative"), -->
+<!--                   "Meta-analysis" = c("Team", "Protocol", "Statistical"), -->
+<!--                   row.names = c("Author", "Search", "Conclusion"), -->
+<!--                   check.names = FALSE) -->
+<!-- kable(tab) %>% -->
+<!--   kable_styling(bootstrap_options = c("striped", "hover")) -->
+<!-- ``` -->
 
-## Popularity
-
-```{r, out.height = "100%"}
- knitr::include_graphics("./materials/popularity.png")
-```
 
 ## Popularity
 
-Popularity of this method has grown tremendously [@ioannidisMassProductionRedundant2016]
+:::: {.columns}
 
-Why?
+::: {.column width="60%"}
+
+Popularity grows exponentially [@ioannidisMassProductionRedundant2016]
 
 1. Output of primary research keeps increasing [@bornmannGrowthRatesModern2015]
 2. "Replication crisis" increased demand for reliable findings
 3. Incentives:
     * Limited effort and cost
     * Highly cited and respected
-    
+  
+:::
+
+::: {.column width="40%"}
+
+```{r, out.height = "100%"}
+ knitr::include_graphics("./materials/popularity.png")
+```    
+
+:::
+
+::::
+
+
+
 
 ## Goals of meta-analysis
 
 1. Summarize effect
 2. Increase statistical power and precision
-3. Develop, refine and test hypothesis
-4. Reduce the subjectivity of study comparisons by using systematic and explicit comparison procedure
-5. Identify gap in knowledge base and directions for future research
+3. Test hypotheses
+4. Objectively synthesize literature
+5. Identify knowledge gaps and future directions
 6. Power analysis for future studies
-7. *Identify heterogeneity*
-8. *Account for heterogeneity*
-
-
+7. **Identify effect heterogeneity**
+8. **Explain effect heterogeneity**
 
 ## Steps in meta-analysis
 
@@ -195,9 +200,13 @@ Why?
 
 # Effect sizes
 
-## What effect sizes? {.smaler}
+## What effect sizes? {.smaller}
 
-The effect size is the unit of analysis in a meta-analysis. 
+:::: {.columns}
+
+::: {.column width="60%"}
+
+**Which Effect Sizes?**
 
 * "Descriptive" statistics (mean, SD, p, Cronbach's alpha)
 * Differences between groups
@@ -208,8 +217,12 @@ The effect size is the unit of analysis in a meta-analysis.
     - Correlation
     - Regression coefficient
 * Etc.: any statistic with standard error
+  
+:::
 
-## Effect sizes: What do you need?
+::: {.column width="40%"}
+
+**What do you need?**
 
 * Study must report the required effect size...
 * ...or sufficient statistics to compute it
@@ -220,31 +233,31 @@ Resources for converting:
 * [Campbell collaboration PDF](https://campbellcollaboration.org/media/k2/attachments/converting_between_effect_sizes.pdf)
 * [Daniel Lakens' spreadsheet](https://osf.io/vbdah/)
 
+:::
+
+::::
+
+
+
+
 ## Effect sizes: Pitfals
 
 * Control variables
 * Dependency in the data (e.g., repeated measures, multiple studies on same dataset)
 
-# Averaging studies
+# Models for Meta-Analysis
 
-## How to combine?
-
-Starting with the summary statistic for each study, how should we combine these??
-
-A simple average gives each study equal weight
-
-This seems intuitively wrong
-
-All studies are created equal.. but some are more equal than others
 
 ## Weighting studies
 
-More weight for more informative studies
+All studies are created equal.. but some are more equal than others
+
+Assign more weight to more informative studies
 
 * More participants
-* Lower variance
+* Lower sampling error
 
-This is reflected in the sampling variance (standard error)
+This is reflected in the standard error
 
 ## Effect sizes: Standard error {.smaller}
 
@@ -253,8 +266,8 @@ Standard error affects the weighting in meta-analysis
 Also referred to as **sampling variance** 
 
 * SE is the SD of the sampling distribution
-* $SE^2$ is the variance of the sampling distribution
-* It is a measure of precision / uncertainty about the sample statistic as an estimator of the population value
+* $SE^2$ is the sampling variance
+* A measure of precision / uncertainty about the sample statistic as estimator of the population value
 * Small SE: Accurate estimate
 * Big SE: Uncertain estimate
 
@@ -303,7 +316,7 @@ For other statistics, SE is almost never reported:
 
 **Familiarize yourself with the formula for the SE of your effect size BEFORE you collect data!**
 
-# Calculating weighted average
+# Fixed effect Model
 
 ## Fixed effect model
 
@@ -360,7 +373,7 @@ Differences between studies with respect to:
 * Outcomes: type, scale, cut-off points, duration of follow-up, etc.
 * Quality and methodology: randomised or not, allocation concealment, blinding, etc.
 
-Meta-analysis is **not** immune to small sample problems (small N, many moderators p)
+<!-- Meta-analysis is **not** immune to small sample problems (small N, many moderators p) -->
 
 
 ## Random effects model
@@ -376,7 +389,7 @@ Differences between observed effect sizes arise from two sources of variance:
     
 Assumption holds:
 
-* When there are no systematic differences between studies
+* When there are random uncorrelated, but no systematic, differences between studies
 
 ## Random effects: Formulas
 
@@ -422,7 +435,7 @@ Q is a weighted sum of squared deviations of observed effect sizes around the po
 
 $Q = \sum_{i=1}^{k}W_i*(y_i-\hat{\theta})^2$
 
-## Heterogeneity statistics: I2
+## Heterogeneity statistics: I2 {.smaller}
 
 $I^2$ describes the percentage of variation across studies that is due to heterogeneity rather than chance (Higgins and Thompson, 2002; Higgins et al., 2003). 
 
@@ -500,7 +513,7 @@ Really the same as normal regression analysis, but with an extra "error" term fo
 
 $$y_i = \beta_0 + \beta_1X_{1i} + \dots + \beta_pX_{pi} + \epsilon_i$$
 
-## Moderators: Dummies in meta-regression
+## Dummies in meta-regression {.smaller}
 
 The effect of a grouping-variable can be expressed two ways.
 
@@ -520,16 +533,23 @@ Mathematically, they are identical. We can call the first one "ANOVA specificati
 
 1. Studies are incomparable:
     - Do not pool at all (apples / oranges)
-    - NEW: aggregate evidence using *Product Bayes Factor*
+    - **NEW: aggregate evidence using *Product Bayes Factor***
 2. (Close) replications: fixed effect model
 3. Conceptual replications with minor differences: random effects model
 4. Known systematic differences: Explain heterogeneity
     - Meta-regression
 5. Unknown systematic differences: *Explore heterogeneity*
-    - Regularized meta-regression
-    - Random Forest meta-regression
+    - **Regularized meta-regression**
+    - **Random Forest meta-regression (MetaForest)**
 
 ## Exploring Heterogeneity
+
+
+## The challenge {.smaller}
+
+In heterogeneous bodies of literature, there are many between-studies differences
+
+Differences in samples, designs, measurements, and methods
 
 Small sample, many predictors (n < p)
 
@@ -538,25 +558,12 @@ Small sample, many predictors (n < p)
 * Lack of theory to identify moderators
 * Existing methods not suitable for exploratory moderator analysis
 
-
-# Machine Learning-Informed Moderator Selection
-
-Regularized meta-regression
-Random forest meta-regression
-
-## The challenge
-
-When meta-analyzing existing bodies of literature, there are many between-studies differences
-
-Differences in samples, designs, measurements, and methods
-
-The number of potential moderators is large relative to the number of studies (n<p)
-
-
 ## Curse of Dimensionality
 
-https://cjvanlissa.shinyapps.io/Polynomials/
 
+```{=html}
+<iframe width="1000" height="700" src="https://cjvanlissa.shinyapps.io/Polynomials/" title="Polynomials"></iframe>
+```
 
 ## Which Moderators Matter?
 
@@ -565,7 +572,7 @@ https://cjvanlissa.shinyapps.io/Polynomials/
  	  + Ecological fallacy: individual level vs study level
 
 
-## Limitations of existing solutions
+## Use Statistics
  
 * (Bivariate) null-hypothesis significance tests
     + P-values are not designed for model selection, but for inference on a-priori hypotheses
@@ -578,6 +585,12 @@ https://cjvanlissa.shinyapps.io/Polynomials/
     + Must explicitly define candidate models
 * “Variable selection”
     + Focal issue in machine learning (Hastie, Tibshirani, & Friedman, 2009)
+    
+# Machine Learning Moderator Selection
+
+Regularized meta-regression
+Random forest meta-regression
+
 
 ## Regularized meta-regression
 
@@ -617,11 +630,20 @@ $$
     + Horseshoe prior has heavier tails (Carvalho, Polson, & Scott, 2010)
 * Can be estimated in existing software (STAN)
 
+## Priors
+
+::: {layout-ncol=2}
+![](./materials/lasso.png)
+
+![](./materials/hs.png)
+
+:::
+
 ## Introducing `brma`
 
 R-package pema (penalized meta-analysis) implements BRMA with back-end in STAN
 
-* Compiled code makes this package very fast and easy to install
+* Compiled code: very fast and easy to install
 * Compatible with rstan and related packages
 * All plots and summary functions are available
 * Validated using simulation study (Van Lissa, Van Erp, & Clapper, 2023)
@@ -642,7 +664,18 @@ Compared to RMA, BRMA showed:
     +	But all algorithms showed bias, even RMA
 * Residual heterogeneity: no additional bias
 
-Conclusions
+## Output {.smaller}
+
+```{r echo = TRUE, eval = FALSE}
+fit_lasso <- brma(yi ~ ., data = bonapersona)
+```
+```{r echo = FALSE, eval = TRUE}
+fit_lasso <- readRDS("brma_results.RData")
+print(summary(fit_lasso))
+```
+
+
+## Summary: brma
 
 *	Helps eliminate irrelevant moderators / prevent overfitting
 *	Suitable small sample solution
@@ -650,12 +683,21 @@ Conclusions
 *	Can accommodate predictors of any measurement level
 *	Readily available in user friendly software
 
+## Example Studies {.smaller}
 
-## Tree-based methods
+**Method reference: [Van Lissa, van Erp, & Clapper (2023). Selecting relevant moderators with Bayesian regularized meta‐regression. Research Synthesis Methods, 14(2), 301-322.](https://onlinelibrary.wiley.com/doi/abs/10.1002/jrsm.1628)**
+
+[Kwee et al. (2023). Anxiolytic effects of endocannabinoid enhancing compounds: A systematic review and meta-analysis. European Neuropsychopharmacology, 72, 79-94.](https://www.sciencedirect.com/science/article/pii/S0924977X23000676)
+
+[Heesbeen et al. (2023). The effect of SSRIs on fear learning: a systematic review and meta-analysis. Psychopharmacology, 240(11), 2335-2359.](https://link.springer.com/article/10.1007/s00213-023-06333-7)
+
+# Tree-based Methods
+
+## MetaForest
 
 
 ```
-Tree algorithm
+Single Tree algorithm
 
 1. Split the data on the moderator/value that leads to the most  
    homogenous post-split groups on the dependent variable
@@ -790,6 +832,17 @@ As pre-screening:
 2. (Optional:) Test linear model of relevant moderators
 3. Classic meta-analysis for summary effect
 
+## Example Studies {.smaller}
+
+**Method reference: Van Lissa, 2020. Small sample meta-analyses: Exploring heterogeneity using MetaForest. In Small sample size solutions (pp. 186-202). Routledge.**
+
+[Curry et al., 2018. Happy to help? A systematic review and meta-analysis of the effects of performing acts of kindness on the well-being of the actor. Journal of Experimental Social Psychology, 76, 320-329.](https://www.sciencedirect.com/science/article/pii/S0022103117303451)
+
+[Terrer et al., 2019. Nitrogen and phosphorus constrain the CO2 fertilization of global plant biomass. Nature Climate Change, 9(9), 684-689.](https://www.nature.com/articles/s41558-019-0545-2)
+
+[Roberts et al., 2019. The effect of short-term exposure to the natural environment on depressive mood: A systematic review and meta-analysis. Environmental research, 177, 108606.](https://www.sciencedirect.com/science/article/pii/S0013935119304037)
+
+[Bonapersona et al., 2019. The behavioral phenotype of early life adversity: A 3-level meta-analysis of rodent studies. Neuroscience & Biobehavioral Reviews, 102, 299-307.](https://www.sciencedirect.com/science/article/pii/S014976341930168X)
 
 # Aggregating Evidence
 
@@ -800,6 +853,108 @@ Incomparable studies (apples and oranges)
 * Colinear moderators
 * Incomparable effect sizes (e.g., bivariate AND partial regression coefficients)
 * Theoretically incomparable (e.g., human VS rat, mouse, and cricket models of anxiety)
+
+
+## Solution: Product Bayes Factor
+
+- PBF aggregates evidence for hypotheses across heterogeneous replication studies.
+- Validated via simulation study varying sample size, number of replications, and reliability.
+- PBF shows greater sensitivity than random-effects meta-analysis (RMA) but lower specificity.
+- Useful when heterogeneity assumptions fail
+
+
+## Meta-Analysis vs. Bayesian Evidence Synthesis
+
+- **Meta-analysis**: Estimates a population effect size/heterogeneity
+- **BES (PBF)**: Synthesizes evidence for one informative hypothesis across heterogeneous studies
+
+
+
+
+## Informative Hypotheses
+
+- Explicit hypothesis about theoretically-expected relationships
+- About parameters of interest (e.g., $\beta$), using (in)equality constraints (`=, <, >`)
+- Null hypothesis $H_0$ is a special case: $H_0: \beta = 0$.
+- Example: treatment effect exceeds Smallest-Effect-Of-Interest (SESOI), $H_i: \beta > 0.1$.
+- Dose-response effect: $H_i: (\beta_1 < \beta_2 < \beta_3) > 0.1$.
+
+## Bayesian Informative Hypothesis Tests
+
+- Evidence for $H_i$ relative to another hypothesis expressed as Bayes factor (BF).
+- Complementary hypothesis $H_{!i}$: "not $H_i$".
+- BF values: $BF_{ic} = 10$ (10x more support for $H_i$ vs $H_c$), $BF_{ic} = 0.1$ (10x less support).
+- BF differs from significance test:
+  - Continuous measure of evidence, not binary decision
+  - Robust to multiple- and sequential-testing.
+- Decision criteria: $BF > 3$ or $BF > 10$ can be considered conclusive evidence.
+
+## How are Bayes Factors Calculated?
+
+- **Approximated adjusted fractional Bayes factor (AAFBF)**:
+  - Integrates posterior and prior distributions based on parameter constraints
+  - Uses Monte Carlo integration to approximate
+  - Results vary slightly, random seed ensures reproducibility
+- **Prior sensitivity**:
+  - AAFBF uses minimally informative priors.
+  - Inequality constraints are not prior-sensitive, but equality constraints are
+
+## The Product Bayes Factor (PBF)
+
+- Combines Bayes factors from individual studies by multiplying them
+- Assumes all studies test the same theoretical relationship
+    + But not that the effect sizes are all comparable
+
+
+
+
+## Simulation Study
+
+- PBF had higher overall accuracy (greater sensitivity, lower specificity) than RMA and IPD meta-analysis.
+- Researchers should consider the trade-offs between sensitivity and specificity when selecting synthesis methods.
+- PBF is ideal for small samples of heterogeneous studies
+    * Offers a quantitative conclusion where other methods fail 
+
+## Output
+
+
+
+```{r echo = FALSE, eval = FALSE}
+library(bain)
+set.seed(1)
+res <- pbf(yi = kuiper2013$beta,
+    vi = kuiper2013$vi,
+    ni = kuiper2013$n,
+hypothesis = "y = 0; y > 0; y < 0")
+saveRDS(res, "output_pbf.RData")
+```
+
+```{r echo=TRUE, eval = FALSE}
+library(bain)
+set.seed(1)
+res <- pbf(yi = kuiper2013$beta,
+           vi = kuiper2013$vi,
+           ni = kuiper2013$n,
+           hypothesis = "y = 0; y > 0; y < 0")
+```
+```{r echo=FALSE, eval = TRUE}
+res <- readRDS("output_pbf.RData")
+format.data.frame(res, digits = 2)
+
+```
+
+
+## Example Studies {.smaller}
+
+**Methodological References:**
+
+[Van Lissa, Kuiper, & Clapper (in print). Aggregating evidence from conceptual replication studies using the product Bayes factor. Research Synthesis Methods](https://osf.io/preprints/psyarxiv/nvqpw/download)
+
+[Van Lissa et al. (2021). Teacher’s corner: Evaluating informative hypotheses using the Bayes factor in structural equation models. Structural Equation Modeling: A Multidisciplinary Journal, 28(2), 292-301.](https://www.tandfonline.com/doi/pdf/10.1080/10705511.2020.1745644)
+
+**Example paper:**
+
+[Van Leeuwen et al. (2024). Morality as Cooperation, Politics as Conflict. Social Psychological Bulletin, 19, 1-22.](https://osf.io/preprints/psyarxiv/wm6rk/download)
 
 
 # Publication bias
