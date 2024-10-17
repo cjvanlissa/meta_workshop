@@ -97,13 +97,12 @@ div.csl-indent {
   <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">Table of contents</h2>
    
   <ul>
-<li>
-<a href="#pool" id="toc-pool" class="nav-link active" data-scroll-target="#pool">Meta-Analysis in R</a>
+<li><a href="#preparing-for-the-workshop" id="toc-preparing-for-the-workshop" class="nav-link active" data-scroll-target="#preparing-for-the-workshop">Preparing for the Workshop</a></li>
+  <li>
+<a href="#pool" id="toc-pool" class="nav-link" data-scroll-target="#pool">Meta-Analysis in R</a>
   <ul class="collapse">
 <li><a href="#using-your-own-data" id="toc-using-your-own-data" class="nav-link" data-scroll-target="#using-your-own-data">Using Your Own Data</a></li>
   <li><a href="#using-different-demo-data" id="toc-using-different-demo-data" class="nav-link" data-scroll-target="#using-different-demo-data">Using Different Demo Data</a></li>
-  </ul>
-</li>
   <li>
 <a href="#fixedef" id="toc-fixedef" class="nav-link" data-scroll-target="#fixedef">Fixed Effect Model</a>
   <ul class="collapse">
@@ -112,6 +111,8 @@ div.csl-indent {
 </li>
   <li><a href="#random" id="toc-random" class="nav-link" data-scroll-target="#random">Random-Effects-Model</a></li>
   <li><a href="#random-effects-model-with-rma" id="toc-random-effects-model-with-rma" class="nav-link" data-scroll-target="#random-effects-model-with-rma">Random-Effects Model with <code>rma</code></a></li>
+  </ul>
+</li>
   <li>
 <a href="#metareg" id="toc-metareg" class="nav-link" data-scroll-target="#metareg">Meta-Regression</a>
   <ul class="collapse">
@@ -186,23 +187,43 @@ div.csl-indent {
   </div>
   
 
-</header><section id="pool" class="level2"><h2 class="anchored" data-anchor-id="pool">Meta-Analysis in R</h2>
+</header><section id="preparing-for-the-workshop" class="level1 smaller"><h1 class="smaller">Preparing for the Workshop</h1>
+<ol type="1">
+<li>Install R and then RStudio
+<ul>
+<li>Follow the instructions here: <a href="https://posit.co/download/rstudio-desktop/" class="uri">https://posit.co/download/rstudio-desktop/</a>
+</li>
+</ul>
+</li>
+<li>Open RStudio.<br>
+Now, run the setup script for this workshop.<br>
+In the window labeled “Console”, paste this code and press [Enter]:</li>
+</ol>
+<pre><code>source("https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R")</code></pre>
+<ol start="3" type="1">
+<li>If you have your own data: after running the <code><a href="https://rdrr.io/r/base/source.html">source()</a></code> command above, you can use the function <code>check_data()</code>.
+<ul>
+<li>Load your own data into R as usual, and check if you can use it for the workshop exercises by running:</li>
+<li><code>check_data(your_data_object)</code></li>
+</ul>
+</li>
+</ol></section><section id="pool" class="level1"><h1>Meta-Analysis in R</h1>
 <p>The essence of Meta-Analysis is <strong>pooling your effect sizes</strong> to get an overall effect size estimate of the studies.</p>
 <p>When pooling effect sizes in Meta-Analysis, there are two basic approaches: the <strong>Fixed-Effect-Model</strong>, or the <strong>Random-Effects-Model</strong> <span class="citation" data-cites="borensteinIntroductionMetaAnalysis2009">(<a href="#ref-borensteinIntroductionMetaAnalysis2009" role="doc-biblioref">Borenstein et al., 2009</a>)</span>. The fixed effect model assumes that one true effect size exists in the population; the random effects model assumes that the true effect varies (and is normally distributed).</p>
 <p>Both of these models require an <strong>effect size</strong>, and a <strong>dispersion (variance)</strong> estimate for each study.</p>
 <p>For these meta-analyses, we’ll use the <code>metafor</code> package <span class="citation" data-cites="viechtbauerConductingMetaanalysesMetafor2010">(<a href="#ref-viechtbauerConductingMetaanalysesMetafor2010" role="doc-biblioref">Viechtbauer, 2010</a>)</span>. However, notice that we load a different package, <code>metaforest</code>. The reason is that it contains the example data for this tutorial, and it loads the <code>metafor</code> package in turn.</p>
 <div class="cell">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">metaforest</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">metaforest</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="using-your-own-data" class="level3"><h3 class="anchored" data-anchor-id="using-your-own-data">Using Your Own Data</h3>
 <p>If you want, you can conduct the examples below with your own data. Note that the interactive questions won’t work in this case (the correct answers are based on the <code>curry</code> data).</p>
 <p>If you want to use your own data, you can use the function <code>check_data()</code> to help make sure that your data are suitable for the tutorial examples. Install the function by running:</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then, apply the function to your data object by running <code>check_data(your_data_object)</code>. It will give helpful suggestions to make it easier to follow the tutorial with your own data:</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">curry</span></span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="va">curry</span></span>
 <span><span class="fu">check_data</span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>• There is no column named 'yi' in your data. If you have an effect size column, it will be easier to do the tutorial if you rename it, using syntax like this:
@@ -214,13 +235,13 @@ div.csl-indent {
 </div>
 <p>Note that the message suggests that we rename the effect size column, which is called <code>d</code> in the <code>curry</code> dataset, to <code>yi</code>. Let’s do that:</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="st">'d'</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'yi'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span> <span class="op">==</span> <span class="st">'d'</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">'yi'</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section><section id="using-different-demo-data" class="level3"><h3 class="anchored" data-anchor-id="using-different-demo-data">Using Different Demo Data</h3>
 <p>If you do not have your own data but are up for a challenge, you can use a different demo dataset to complete the tutorial. Two suggestions are:</p>
 <pre><code><a href="https://rdrr.io/pkg/metaforest/man/fukkink_lont.html">metaforest::fukkink_lont
 pema::bonapersona</a></code></pre>
-</section></section><section id="fixedef" class="level2"><h2 class="anchored" data-anchor-id="fixedef">Fixed Effect Model</h2>
+</section><section id="fixedef" class="level2"><h2 class="anchored" data-anchor-id="fixedef">Fixed Effect Model</h2>
 <p><strong>The idea behind the fixed-effects-model</strong></p>
 <p>The fixed-effects-model assumes that all observed effect sizes stem from a single <em>true</em> population effect <span class="citation" data-cites="borensteinIntroductionMetaAnalysis2009">(<a href="#ref-borensteinIntroductionMetaAnalysis2009" role="doc-biblioref">Borenstein et al., 2009</a>)</span>. To calculate the overall effect, we therefore average all effect sizes, but give studies with greater precision a higher weight. Precision relates to the fact that studies with a smaller <strong>Standard Error</strong> provide more accurate estimates of the true population effect.</p>
 <p>For this weighing, we use the <strong>inverse of the variance</strong> <span class="math inline">\(1/\hat\sigma^2_k\)</span> of each study <span class="math inline">\(k\)</span>. We then calculate a weighted average of all studies, our fixed effect size estimator <span class="math inline">\(\hat\theta_F\)</span>:</p>
@@ -264,7 +285,7 @@ pema::bonapersona</a></code></pre>
 </div>
 <p>Let’s conduct our first fixed-effects-model Meta-Analysis. We we will give the results of this analysis the simple name <code>m</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span>,     <span class="co"># The yi-column of the df, which contains Cohen's d</span></span>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span>,     <span class="co"># The yi-column of the df, which contains Cohen's d</span></span>
 <span>         vi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">vi</span>,    <span class="co"># The vi-column of the df, which contains the variances</span></span>
 <span>         method <span class="op">=</span> <span class="st">"FE"</span><span class="op">)</span> <span class="co"># Run a fixed-effect model</span></span>
 <span><span class="va">m</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -308,10 +329,10 @@ Formative Assessment
 <option value="answer">TRUE</option>
 <option value="">FALSE</option></select></p>
 <p>What can you say about the heterogeneity of the population effect? <select class="webex-select"><option value="blank"></option>
-<option value="">It is significant, Q(55) = 156,91, p &lt; .0001</option>
+<option value="">Can’t say anything based on this output</option>
 <option value="answer">It is assumed to be zero</option>
-<option value="">It is large, I2 = 64.95%</option>
-<option value="">Can’t say anything based on this output</option></select></p>
+<option value="">It is significant, Q(55) = 156,91, p &lt; .0001</option>
+<option value="">It is large, I2 = 64.95%</option></select></p>
 </div>
 </div>
 </section></section><section id="random" class="level2"><h2 class="anchored" data-anchor-id="random">Random-Effects-Model</h2>
@@ -339,7 +360,7 @@ Formative Assessment
 </h2>
 <p>We can re-use our code from the fixed-effects-model and simply remove the <code>method = "FE"</code> argument to conduct a random-effects analysis with the default REML estimator for <span class="math inline">\(\tau^2\)</span>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_re</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span>,     <span class="co"># The yi-column of the df, which contains Cohen's d</span></span>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_re</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span>,     <span class="co"># The yi-column of the df, which contains Cohen's d</span></span>
 <span>            vi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">vi</span><span class="op">)</span>    <span class="co"># The vi-column of the df, which contains the variances</span></span>
 <span><span class="va">m_re</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -376,14 +397,14 @@ Formative Assessment
 <p>How big is the overall effect? <input class="webex-solveme nospaces" data-tol="0.01" size="4" data-answer="[&quot;0.24&quot;,&quot;.24&quot;]"></p>
 <p>What is the estimated heterogeneity? <input class="webex-solveme nospaces" data-tol="0.01" size="4" data-answer="[&quot;0.06&quot;,&quot;.06&quot;]">.</p>
 <p>What can you say about the the expected value of the population effect in the random-effects model, compared to the previous fixed-effect model? <select class="webex-select"><option value="blank"></option>
-<option value="answer">It is larger</option>
 <option value="">Can’t say anything based on this output</option>
-<option value="">It is smaller</option>
-<option value="">It is about the same</option></select></p>
+<option value="answer">It is larger</option>
+<option value="">It is about the same</option>
+<option value="">It is smaller</option></select></p>
 <p>This is caused by the fact that random-effects models assign more equal weight to all studies, including small ones, which tend to be more biased.</p>
 </div>
 </div>
-</section><section id="metareg" class="level1"><h1>Meta-Regression</h1>
+</section></section><section id="metareg" class="level1"><h1>Meta-Regression</h1>
 <p><strong>The idea behind meta-regression</strong></p>
 <p>In a conventional regression, we specify a model predicting the dependent variable <span class="math inline">\(y\)</span>, across <span class="math inline">\(_i\)</span> participants, based on their values on <span class="math inline">\(p\)</span> predictor variables, <span class="math inline">\(x_{i1} \dots x_{ip}\)</span>. The residual error is referred to as <span class="math inline">\(\epsilon_i\)</span>. A standard regression equation therefore looks like this:</p>
 <p><span class="math display">\[y_i=\beta_0 + \beta_1x_{1i} + ...+\beta_px_{pi} + \epsilon_i\]</span></p>
@@ -403,7 +424,7 @@ Formative Assessment
 </section><section id="meta-regression-in-r" class="level2"><h2 class="anchored" data-anchor-id="meta-regression-in-r">Meta-regression in R</h2>
 <p>Meta-regressions can be conducted in R using the <code>rma</code> function in <code>metafor</code>. First, let’s conduct a regression with a single categorical predictor, <code>donorcode</code>, which has two levels: <code>Anxious</code> and <code>Typical</code>:</p>
 <div class="cell">
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">donorcode</span>, vi <span class="op">=</span> <span class="va">vi</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">donorcode</span>, vi <span class="op">=</span> <span class="va">vi</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="va">m_cat</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -452,7 +473,7 @@ Formative Assessment
 <section id="continuous-predictors" class="level3"><h3 class="anchored" data-anchor-id="continuous-predictors">Continuous Predictors</h3>
 <p>Imagine you want to check if the <strong>proportion of male participants</strong> is associated with effect size. The variable <code>sex</code> contains this information. You can use this predictor in a meta-regression:</p>
 <div class="cell">
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span><span class="va">sex</span>,</span>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_reg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span><span class="va">sex</span>,</span>
 <span>             vi <span class="op">=</span> <span class="va">vi</span>,</span>
 <span>             data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="va">m_reg</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -496,17 +517,17 @@ Formative Assessment
 <option value="">TRUE</option>
 <option value="answer">FALSE</option></select></p>
 <p>How to interpret the effect of sex? <select class="webex-select"><option value="blank"></option>
-<option value="">Can’t say based on this output</option>
-<option value="answer">A one-percent increase in male participants is associated with a .005 point increase in the population effect</option>
 <option value="">There is no effect of sex</option>
-<option value="">The difference between men and women is .005</option></select></p>
+<option value="answer">A one-percent increase in male participants is associated with a .005 point increase in the population effect</option>
+<option value="">The difference between men and women is .005</option>
+<option value="">Can’t say based on this output</option></select></p>
 </div>
 </div>
 </section><section id="multiple-meta-regression" class="level3"><h3 class="anchored" data-anchor-id="multiple-meta-regression">Multiple Meta-Regression</h3>
 <p>Previously, we only considered the scenario in which we use <strong>one predictor</strong> <span class="math inline">\(\beta_1x_1\)</span> in our meta-regression. When we add more than one predictor, we’re using <strong>multiple meta-regression</strong>. In multiple meta-regression we use several moderators (variables) to predict the outcome (effect sizes). When we look back at the <strong>general meta-regression</strong> formula we defined before, we actually see that the formula already provides us with this feature through the <span class="math inline">\(\beta_nx_{pk}\)</span> part. Here, the parameter <span class="math inline">\(p\)</span> denotes that we can include <span class="math inline">\(p\)</span> more predictors/variables into our meta-regression, making it a multiple meta-regression.</p>
 <p>We could include both predictors from the previous exercises in a mutliple meta-regression as follows:</p>
 <div class="cell">
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">donorcode</span>,</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_multi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">sex</span> <span class="op">+</span> <span class="va">donorcode</span>,</span>
 <span>               vi <span class="op">=</span> <span class="va">vi</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="va">m_multi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -539,13 +560,13 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>Now, let’s create a model that includes <em>all</em> potential moderators of the effect size:</p>
 <div class="cell">
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sex"</span>, <span class="st">"age"</span>, <span class="st">"location"</span>, <span class="st">"donorcode"</span>, <span class="st">"interventioncode"</span>, <span class="st">"controlcode"</span>, <span class="st">"recipients"</span>, <span class="st">"outcomecode"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mods</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"sex"</span>, <span class="st">"age"</span>, <span class="st">"location"</span>, <span class="st">"donorcode"</span>, <span class="st">"interventioncode"</span>, <span class="st">"controlcode"</span>, <span class="st">"recipients"</span>, <span class="st">"outcomecode"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">res_multi2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html">as.formula</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"yi ~"</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="va">mods</span>, collapse <span class="op">=</span> <span class="st">"+"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>, vi <span class="op">=</span> <span class="va">vi</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Redundant predictors dropped from the model.</code></pre>
 </div>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_multi2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_multi2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Mixed-Effects Model (k = 56; tau^2 estimator: REML)
@@ -644,10 +665,10 @@ Formative Assessment
 <p>What is the number of studies included in the second multiple meta-regression (with all predictors)? <input class="webex-solveme nospaces" size="2" data-answer="[&quot;56&quot;]"></p>
 <p>What is the number of parameters of the second multiple meta-regression (with all predictors)? <input class="webex-solveme nospaces" size="2" data-answer="[&quot;30&quot;]"></p>
 <p>The <span class="math inline">\(R^2\)</span> of the second multiple meta-regression model is 93.30%. How can we interpret this? <select class="webex-select"><option value="blank"></option>
-<option value="">Can’t say based on this output</option>
 <option value="">As a large effect; there must be several significant moderators.</option>
+<option value="answer">With caution; the model is likely overfit.</option>
 <option value="">As a large effect; the moderators explain most of the heterogeneity.</option>
-<option value="answer">With caution; the model is likely overfit.</option></select></p>
+<option value="">Can’t say based on this output</option></select></p>
 </div>
 </div>
 </section></section><section id="optional-pitfalls-of-meta-regression" class="level2"><h2 class="anchored" data-anchor-id="optional-pitfalls-of-meta-regression">Optional: Pitfalls of Meta-Regression</h2>
@@ -658,7 +679,7 @@ Formative Assessment
 <p>This warning tells us that some of the moderators conveyed exactly the same information, and therefore, it’s not possible to include both in the same model.</p>
 <p>For example, look at the following subset of the data. Imagine that this would be our entire dataset:</p>
 <div class="cell">
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">24</span>, <span class="fl">28</span>, <span class="fl">46</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"location"</span>, <span class="st">"interventioncode"</span>, <span class="st">"controlcode"</span>, <span class="st">"outcomecode"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">24</span>, <span class="fl">28</span>, <span class="fl">46</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"location"</span>, <span class="st">"interventioncode"</span>, <span class="st">"controlcode"</span>, <span class="st">"outcomecode"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="table table-sm table-striped small">
@@ -740,7 +761,7 @@ Formative Assessment
 <p>Let’s use Bayesian regularized meta-regression (BRMA) to select relevant moderators!</p>
 <p>First, load in the necessary packages. If you are running the model locally on a multi-core machine, you can set <code>options(mc.cores = 4)</code>. This runs 4 MCMC chains in parallel, giving you multiple independent sampling chains while keeping estimation time relatively short.</p>
 <div class="cell">
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/pema">pema</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/cjvanlissa/pema">pema</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://cjvanlissa.github.io/tidySEM/">tidySEM</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span><span class="op">(</span>mc.cores <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -748,13 +769,13 @@ Formative Assessment
 <section id="two-level-model" class="level2"><h2 class="anchored" data-anchor-id="two-level-model">Two-level model</h2>
 <p>First, for simplicity, we run a two-level BRMA model, ignoring the fact that certain effect sizes come from the same study.</p>
 <div class="cell">
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_brma</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yi"</span>, <span class="st">"vi"</span>, <span class="va">mods</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_brma</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yi"</span>, <span class="st">"vi"</span>, <span class="va">mods</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="two-level-model-with-the-lasso-prior" class="level3"><h3 class="anchored" data-anchor-id="two-level-model-with-the-lasso-prior">Two-level model with the lasso prior</h3>
 <p>We start with running a penalized meta-analysis using the lasso prior. Compared to the horseshoe prior, the lasso is easier to use because it has only two hyperparameters to set. However, the lighter tails of the lasso can result in large coefficients being shrunken too much towards zero thereby leading to potentially more bias compared to the regularized horseshoe prior.</p>
 <p>For the lasso prior, we need to specify the degrees of freedom <code>df</code> and the <code>scale</code>. Both default to 1. The degrees of freedom determines the chi-square prior that is specified for the inverse-tuning parameter. Increasing the degrees of freedom will allow larger values for the inverse-tuning parameter, leading to less shrinkage. Increasing the scale parameter will also result in less shrinkage. The influence of these hyperparameters can be visualized through the implemented shiny app, which can be called via <code><a href="https://rdrr.io/pkg/pema/man/shiny_prior.html">shiny_prior()</a></code>, and by calling <code>plot(sample_prior())</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">fit_lasso</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pema/man/brma.html">brma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>                  data <span class="op">=</span> <span class="va">df_brma</span>,</span>
 <span>                  vi <span class="op">=</span> <span class="st">"vi"</span>,</span>
@@ -765,7 +786,7 @@ Formative Assessment
 <section id="assessing-convergence-and-interpreting-the-results" class="level4"><h4 class="anchored" data-anchor-id="assessing-convergence-and-interpreting-the-results">Assessing convergence and interpreting the results</h4>
 <p>We can request the results using the <code>summary</code> function. Before we interpret the results, we need to ensure that the MCMC chains have converged to the posterior distribution. Two helpful diagnostics provided in the summary are the number of effective posterior samples <code>n_eff</code> and the potential scale reduction factor <code>Rhat</code>. <code>n_eff</code> is an estimate of the number of independent samples from the posterior. Ideally, the ratio <code>n_eff</code> to total samples is as close to 1 as possible. <code>Rhat</code> compares the between- and within-chain estimates and is ideally close to 1 (indicating the chains have mixed well). Should any values for <code>n_eff</code> or <code>Rhat</code> be far from these ideal values, you can try increasing the number of iterations through the <code>iter</code> argument. By default, the <code>brma</code> function runs four MCMC chains with 2000 iterations each, half of which is discarded as burn-in. As a result, a total of 4000 iterations is available on which posterior summaries are based. If this does not help, non-convergence might indicate a problem with the model specification.</p>
 <div class="cell">
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lasso</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">sum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">fit_lasso</span><span class="op">)</span></span>
 <span><span class="va">sum</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"mean"</span>, <span class="st">"sd"</span>, <span class="st">"2.5%"</span>, <span class="st">"97.5%"</span>, <span class="st">"n_eff"</span>, <span class="st">"Rhat"</span><span class="op">)</span><span class="op">]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
@@ -1163,16 +1184,16 @@ Formative Assessment
 <option value="answer">TRUE</option>
 <option value="">FALSE</option></select></p>
 <p>What can we say about the coefficients of this BRMA analysis, compared to the previous <code><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma()</a></code> multiple regression? <select class="webex-select"><option value="blank"></option>
-<option value="answer">All absolute BRMA coefficients are smaller than RMA coefficients.</option>
-<option value="">The answer depends on the specific analysis.</option>
+<option value="">The BRMA coefficients are more variable than RMA coefficients.</option>
 <option value="">It is easier for coefficients to be significant in BRMA than in RMA.</option>
-<option value="">The BRMA coefficients are more variable than RMA coefficients.</option></select></p>
+<option value="answer">All absolute BRMA coefficients are smaller than RMA coefficients.</option>
+<option value="">The answer depends on the specific analysis.</option></select></p>
 </div>
 </div>
 </section></section></section><section id="optional-three-level-model-with-horseshoe-prior" class="level2"><h2 class="anchored" data-anchor-id="optional-three-level-model-with-horseshoe-prior">Optional: Three-level model with Horseshoe Prior</h2>
 <p>The default prior in <code><a href="https://rdrr.io/pkg/pema/man/brma.html">brma()</a></code> is the horseshoe prior, because it performed best in simulation studies. Moreover, we can take into account the fact that some effect sizes might come from the same study by fitting a three-level model as follows:</p>
 <div class="cell">
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_brma_threelevel</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yi"</span>, <span class="st">"vi"</span>, <span class="st">"study_id"</span>, <span class="va">mods</span><span class="op">)</span><span class="op">]</span></span>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">df_brma_threelevel</span> <span class="op">&lt;-</span> <span class="va">df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yi"</span>, <span class="st">"vi"</span>, <span class="st">"study_id"</span>, <span class="va">mods</span><span class="op">)</span><span class="op">]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">7</span><span class="op">)</span></span>
 <span><span class="va">fit_hs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/pema/man/brma.html">brma</a></span><span class="op">(</span><span class="va">yi</span> <span class="op">~</span> <span class="va">.</span>,</span>
 <span>               data <span class="op">=</span> <span class="va">df_brma_threelevel</span>,</span>
@@ -1186,13 +1207,13 @@ Formative Assessment
 </section></section></section><section id="random-forest-meta-regression" class="level1"><h1>Random Forest Meta-Regression</h1>
 <p>BRMA is comparable to multiple meta-regression, with the main difference being that it shrinks coefficients towards zero to eliminate irrelevant moderators. An alternative machine learning-informed approach to moderator selection is to use tree-based methods. In this section, we use MetaForest - a random forest-based approach - to analyze the same data and select relevant moderators <span class="citation" data-cites="vanlissaSmallSampleMetaanalyses2020">(<a href="#ref-vanlissaSmallSampleMetaanalyses2020" role="doc-biblioref">Van Lissa, 2020</a>)</span>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load the metaforest package</span></span>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load the metaforest package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">metaforest</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="check-convergence" class="level3"><h3 class="anchored" data-anchor-id="check-convergence">Check Convergence</h3>
 <p>For any random forest model, it is important to determine how many trees are needed to get stable results. Convergence is indicated by stabilization of the cumulative mean squared out-of-bag prediction error (MSEoob), as a function of the number of trees in the model. We run the analysis once with a very high number of trees, and pick a smaller number of trees, at which the model is also seen to have converged, to speed up computationally heavy steps, such as replication and model tuning. We re-examine convergence for the final model. Note that we can account for multiple effect sizes per study in <code>MetaForest</code> as well:</p>
 <div class="cell">
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Run model with many trees to check convergence</span></span>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Run model with many trees to check convergence</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">74</span><span class="op">)</span></span>
 <span><span class="va">check_conv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/metaforest/man/MetaForest.html">MetaForest</a></span><span class="op">(</span><span class="va">yi</span><span class="op">~</span><span class="va">.</span>,</span>
 <span>data <span class="op">=</span> <span class="va">df_brma_threelevel</span>,</span>
@@ -1211,7 +1232,7 @@ Formative Assessment
 </section><section id="model-tuning" class="level3"><h3 class="anchored" data-anchor-id="model-tuning">Model Tuning</h3>
 <p>Machine learning models often have hyperparameters that must be tuned to get good performance for a specific learning task. We can tune the model using the R package <code>caret</code>. As tuning parameters, we consider all three types of weights (uniform, fixed-, and random-effects), the number of candidate variables at each split from 2–6, and a minimum node size from 2–6. We select the model with smallest root mean squared prediction error (RMSE) as the final model, based on 5-fold clustered cross-validation. Clustered cross-validation means that effect sizes from the same study are always included in the same fold, to account for the dependency in the data. Note that the number of folds cannot exceed the number of clusters in the data. Moreover, if the number of clusters is very small, one might have to resort to specifying the same number of folds as clusters. Model tuning is computationally intensive and might take a long time.</p>
 <div class="cell">
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load caret</span></span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Load caret</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/topepo/caret/">caret</a></span><span class="op">)</span></span>
 <span><span class="co"># Set up 5-fold clustered CV</span></span>
 <span><span class="va">grouped_cv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/caret/man/trainControl.html">trainControl</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"cv"</span>,</span>
@@ -1283,7 +1304,7 @@ Formative Assessment
 </section><section id="interpreting-the-results" class="level3"><h3 class="anchored" data-anchor-id="interpreting-the-results">Interpreting the Results</h3>
 <p>The object returned by train already contains the final model, estimated with the best combination of tuning parameters.</p>
 <div class="cell">
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Extract final model</span></span>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Extract final model</span></span>
 <span><span class="va">final</span> <span class="op">&lt;-</span> <span class="va">mf_cv</span><span class="op">$</span><span class="va">finalModel</span></span>
 <span><span class="co"># Extract R^2_oob from the final model</span></span>
 <span><span class="va">r2_oob</span> <span class="op">&lt;-</span> <span class="va">final</span><span class="op">$</span><span class="va">forest</span><span class="op">$</span><span class="va">r.squared</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1291,12 +1312,12 @@ Formative Assessment
 <p>This model has a positive estimate of explained variance in new data, <span class="math inline">\(R^2_{oob} = .19\)</span>.</p>
 <p>Now, we proceed to interpreting the moderator effects, by examining variable importance and partial dependence plots. Variable importance is determined by randomly permuting each variable in turn (so it loses all meaningful association with the outcome), and then assessing how much the model’s predictive performance diminishes after this random permutation. For an important variable, the model performance drops after permutation. Partial dependence plots show the model’s predicted values at different levels of one variable, averaging over the values of all other variables. Thus, you can think of this as the bivariate marginal association.</p>
 <div class="cell">
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot variable importance</span></span>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Plot variable importance</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/metaforest/man/VarImpPlot.html">VarImpPlot</a></span><span class="op">(</span><span class="va">final</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="tutorial_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Sort the variable names by importance</span></span>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Sort the variable names by importance</span></span>
 <span><span class="va">ordered_vars</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">final</span><span class="op">$</span><span class="va">forest</span><span class="op">$</span><span class="va">variable.importance</span><span class="op">)</span><span class="op">[</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span><span class="op">(</span><span class="va">final</span><span class="op">$</span><span class="va">forest</span><span class="op">$</span><span class="va">variable.importance</span>, decreasing <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span></span>
 <span></span>
@@ -1318,18 +1339,18 @@ Formative Assessment
 </div>
 <div class="callout-body-container callout-body">
 <p>What does the negative permutation importance for <code>donorcode</code> indicate? <select class="webex-select"><option value="blank"></option>
+<option value="answer">Acts of Kindness</option>
 <option value="">Prosocial Spending</option>
-<option value="">Other</option>
-<option value="answer">Acts of Kindness</option></select></p>
+<option value="">Other</option></select></p>
 <p>Which intervention has the lowest associated effect size? <select class="webex-select"><option value="blank"></option>
 <option value="">This variable has a negative effect on the outcome (effect size)</option>
-<option value="answer">Randomly permuting this variable improves model fit</option>
+<option value="">Randomly permuting this variable diminishes model fit</option>
 <option value="">This variable has a positive effect on the outcome (effect size)</option>
-<option value="">Randomly permuting this variable diminishes model fit</option></select></p>
+<option value="answer">Randomly permuting this variable improves model fit</option></select></p>
 <p>Which variable has apparent outlier(s)? <select class="webex-select"><option value="blank"></option>
 <option value="answer">age</option>
-<option value="">outcomecode</option>
-<option value="">donorcode</option></select></p>
+<option value="">donorcode</option>
+<option value="">outcomecode</option></select></p>
 </div>
 </div>
 </section><section id="more-information-1" class="level3"><h3 class="anchored" data-anchor-id="more-information-1">More Information</h3>
@@ -1342,7 +1363,7 @@ Formative Assessment
 <p>At the start of the day, we conducted random- and fixed effects meta-analyses using the function <code><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma()</a></code> from the <code>metafor</code> package. This required the <code>yi</code> and <code>vi</code> columns. Now, we will perform a PBF analysis using the <code><a href="https://rdrr.io/pkg/bain/man/pbf.html">pbf()</a></code> function in the <code>bain</code> package, which accepts the same arguments.</p>
 <p>First, we will load the required packages.</p>
 <div class="cell">
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://informative-hypotheses.sites.uu.nl/software/bain/">bain</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://informative-hypotheses.sites.uu.nl/software/bain/">bain</a></span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: package 'bain' was built under R version 4.4.1</code></pre>
 </div>
@@ -1350,7 +1371,7 @@ Formative Assessment
 <section id="repeating-the-rma" class="level3"><h3 class="anchored" data-anchor-id="repeating-the-rma">Repeating the RMA</h3>
 <p>Let’s repeat our previous random effects meta-analysis, and examing a funnel plot of the distribution of effect sizes:</p>
 <div class="cell">
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_rma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">yi</span>, vi <span class="op">=</span> <span class="va">vi</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">res_rma</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">yi</span>, vi <span class="op">=</span> <span class="va">vi</span>, data <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span>
 <span><span class="fu">metafor</span><span class="fu">::</span><span class="fu"><a href="https://wviechtb.github.io/metafor/reference/funnel.html">funnel</a></span><span class="op">(</span><span class="va">res_rma</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="tutorial_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
@@ -1359,7 +1380,7 @@ Formative Assessment
 <p>An effect size over 0 means that helping others increased happiness, even a little bit.</p>
 <p>With a Bayes Factor, we could test the informative hypothesis (just a directional null hypothesis) that helping increases happiness in one particular study, for example the first row of the dataset:</p>
 <div class="cell">
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/bain/man/bain.html">bain</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"yi"</span> <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span>, <span class="co"># Select the first effect size</span></span>
 <span>     Sigma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">vi</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="co"># Make covariance matrix</span></span>
 <span>     hypothesis <span class="op">=</span> <span class="st">"yi &gt; 0"</span>, <span class="co"># Define informative hypothesis</span></span>
@@ -1382,7 +1403,7 @@ Note: BF.u denotes the Bayes factor of the hypothesis at hand versus the unconst
 </section><section id="product-bayes-factor" class="level3"><h3 class="anchored" data-anchor-id="product-bayes-factor">Product Bayes Factor</h3>
 <p>We now perform the PBF analysis, using the <code><a href="https://rdrr.io/pkg/bain/man/pbf.html">pbf()</a></code> method for numeric input (see <code><a href="https://rdrr.io/pkg/bain/man/pbf.html">?pbf</a></code>). This interface is very similar to <code><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma()</a></code>, and is specifically designed for applications where PBF is applied to meta-analytic datasets. The <code>yi</code> and <code>vi</code> arguments are the same as those of <code><a href="https://wviechtb.github.io/metafor/reference/rma.uni.html">rma()</a></code>. Additional argument <code>ni</code> is used to construct the prior for the approximate Bayes factors <span class="citation" data-cites="hoijtinkTutorialTestingHypotheses2019">(<a href="#ref-hoijtinkTutorialTestingHypotheses2019" role="doc-biblioref">Hoijtink et al., 2019</a>)</span>. Importantly, the <code>hypothesis</code> argument determines which informative hypotheses are tested.</p>
 <div class="cell">
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">res_pbf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bain/man/pbf.html">pbf</a></span><span class="op">(</span>yi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">yi</span>,</span>
 <span>               vi <span class="op">=</span> <span class="va">df</span><span class="op">$</span><span class="va">vi</span>,</span>
 <span>               ni <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">df</span><span class="op">$</span><span class="va">n1i</span><span class="op">+</span><span class="va">df</span><span class="op">$</span><span class="va">n2c</span><span class="op">)</span>,</span>

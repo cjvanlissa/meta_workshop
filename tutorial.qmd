@@ -36,7 +36,23 @@ format:
 
 ---
 
-## Meta-Analysis in R {#pool}
+# Preparing for the Workshop {.smaller}
+
+1. Install R and then RStudio
+    + Follow the instructions here: <https://posit.co/download/rstudio-desktop/>
+2. Open RStudio.  
+    Now, run the setup script for this workshop.  
+    In the window labeled "Console", paste this code and press [Enter]: 
+
+```
+source("https://raw.githubusercontent.com/cjvanlissa/meta_workshop/refs/heads/master/check_function.R")
+```
+
+3. If you have your own data: after running the `source()` command above, you can use the function `check_data()`.
+    + Load your own data into R as usual, and check if you can use it for the workshop exercises by running:
+    + `check_data(your_data_object)`
+
+# Meta-Analysis in R {#pool}
 
 The essence of Meta-Analysis is **pooling your effect sizes** to get an overall effect size estimate of the studies.
 
